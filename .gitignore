@@ -1,0 +1,8 @@
+*.mdf
+*.ldf
+*.bak
+bin/
+obj/
+.vs/
+*.exe
+database/
