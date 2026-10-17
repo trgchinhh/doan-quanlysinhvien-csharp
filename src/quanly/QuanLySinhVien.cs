@@ -13,66 +13,6 @@ namespace DoAn_QuanLySinhVien {
 		// giảng viên đang đăng nhập, mọi thao tác chỉ diễn ra trong lớp của giảng viên này
 		private GiangVien giangvien;
 
-		// dữ liệu mẫu sinh viên (giống dữ liệu mẫu ban đầu)
-		private static  List<(string ten, string mssv, float diem, string malop)> danhsachsinhvienmau =
-			new List<(string ten, string mssv, float diem, string malop)> {
-			// Lớp OOP
-			("Nguyễn Trường Chinh", "DH52400001", 7.6f, "OOP"),
-			("Trần Minh Gia Bảo", "DH52400002", 7.6f, "OOP"),
-			("Trần Minh Anh", "DH52400003", 7.1f, "OOP"),
-			("Hoàng Ngọc Hân", "DH52400006", 6.2f, "OOP"),
-			("Bùi Đức Anh", "DH52400009", 3.0f, "OOP"),
-			("Hồ Thùy Dương", "DH52400012", 9.9f, "OOP"),
-			("Phan Mai Phương", "DH52400014", 1.5f, "OOP"),
-			("Đoàn Gia Huy", "DH52400043", 7.9f, "OOP"),
-			("Kiều Thanh Tâm", "DH52400044", 6.8f, "OOP"),
-			("Lương Minh Quân", "DH52400045", 8.1f, "OOP"),
-			// Lớp CSDL
-			("Lê Hoàng Nam", "DH52400004", 8.3f, "CSDL"),
-			("Vũ Võ Tuấn Kiệt", "DH52400007", 6.7f, "CSDL"),
-			("Đỗ Khánh Linh", "DH52400010", 5.8f, "CSDL"),
-			("Lý Hoàng Long", "DH52400013", 7.8f, "CSDL"),
-			("Đặng Văn Lâm", "DH52400017", 10.0f, "CSDL"),
-			("Nguyễn Duy Quang", "DH52400019", 9.1f, "CSDL"),
-			("Phùng Anh Thư", "DH52400046", 9.4f, "CSDL"),
-			("Châu Quốc Việt", "DH52400047", 5.9f, "CSDL"),
-			("Thái Ngọc Ánh", "DH52400048", 7.2f, "CSDL"),
-			("Quách Đình Phong", "DH52400049", 8.7f, "CSDL"),
-			// Lớp IPC
-			("Nguyễn Thanh Tùng", "DH52400005", 9.1f, "IPC"),
-			("Đặng Phương Thảo", "DH52400008", 3.5f, "IPC"),
-			("Ngô Quốc Huy", "DH52400011", 7.6f, "IPC"),
-			("Võ Đình Khang", "DH52400015", 6.4f, "IPC"),
-			("Trần Văn Đan", "DH52400016", 8.0f, "IPC"),
-			("Nguyễn Duy Minh", "DH52400018", 9.2f, "IPC"),
-			("Nguyễn Trường An", "DH52400020", 8.5f, "IPC"),
-			("Lê Thị Ngọc Tú", "DH52400022", 10.0f, "IPC"),
-			("La Thúy Hằng", "DH52400050", 6.6f, "IPC"),
-			("Âu Hoàng Sơn", "DH52400051", 7.5f, "IPC"),
-			// Lớp MH
-			("Phạm Quốc Bảo", "DH52400023", 8.2f, "MHUD"),
-			("Lê Minh Châu", "DH52400024", 7.4f, "MHUD"),
-			("Trần Hải Đăng", "DH52400025", 6.5f, "MHUD"),
-			("Võ Thanh Hà", "DH52400026", 9.0f, "MHUD"),
-			("Huỳnh Gia Hưng", "DH52400027", 5.5f, "MHUD"),
-			("Đinh Ngọc Mai", "DH52400028", 8.8f, "MHUD"),
-			("Dương Anh Khoa", "DH52400029", 7.0f, "MHUD"),
-			("Lâm Thu Hiền", "DH52400030", 9.5f, "MHUD"),
-			("Mai Văn Phúc", "DH52400031", 4.8f, "MHUD"),
-			("Tạ Bảo Ngọc", "DH52400032", 8.0f, "MHUD"),
-			// Lớp KT
-			("Phạm Thanh Hà", "DH52400033", 7.7f, "KTLT"),
-			("Lê Gia Hưng", "DH52400034", 6.9f, "KTLT"),
-			("Trần Bảo Ngọc", "DH52400035", 9.3f, "KTLT"),
-			("Bùi Anh Khoa", "DH52400036", 5.2f, "KTLT"),
-			("Hoàng Thu Hiền", "DH52400037", 8.6f, "KTLT"),
-			("Đỗ Minh Châu", "DH52400038", 7.3f, "KTLT"),
-			("Ngô Hải Đăng", "DH52400039", 6.1f, "KTLT"),
-			("Vương Khánh Vy", "DH52400040", 9.7f, "KTLT"),
-			("Cao Đức Thịnh", "DH52400041", 4.5f, "KTLT"),
-			("Trịnh Mỹ Linh", "DH52400042", 8.4f, "KTLT")
-		};
-
 		public QuanLySinhVien(GiangVien giangvien) {
 			this.giangvien = giangvien;
 			this.soluongsinhvien = 0;
@@ -82,14 +22,16 @@ namespace DoAn_QuanLySinhVien {
 
 		public static void NapDuLieuMauTatCaLop(List<GiangVien> danhsachgiangvien, Dulieu dulieu) {
 			foreach (GiangVien giangvien in danhsachgiangvien) {
-				List<SinhVien> danhsachsinhvien = dulieu.NapDanhSachSinhVien(giangvien.MaLop);
-				if (danhsachsinhvien.Count == 0) {
-					danhsachsinhvien = TaoDanhSachSinhVienMau(giangvien.MaLop);
-					if (danhsachsinhvien.Count > 0) {
-						dulieu.LuuDanhSachSinhVien(danhsachsinhvien, giangvien.MaLop);
+				foreach (Lop lop in giangvien.DanhSachLop) {
+					List<SinhVien> danhsachsinhvien = dulieu.NapDanhSachSinhVien(lop.MaLop);
+					if (danhsachsinhvien.Count == 0) {
+						danhsachsinhvien = TaoDanhSachSinhVienMau(lop.MaLop);
+					}
+					dulieu.LuuDanhSachSinhVien(danhsachsinhvien, lop.MaLop);
+					if (lop.MaLop == giangvien.MaLop) {
+						giangvien.SoSinhVienLop = danhsachsinhvien.Count;
 					}
 				}
-				giangvien.SoSinhVienLop = danhsachsinhvien.Count;
 			}
 		}
 
@@ -122,7 +64,7 @@ namespace DoAn_QuanLySinhVien {
 		// lấy phần dữ liệu mẫu thuộc đúng lớp của giảng viên đang đăng nhập
 		private static List<SinhVien> TaoDanhSachSinhVienMau(string malop) {
 			var danhsachmau = new List<SinhVien>();
-			foreach (var sv in danhsachsinhvienmau) {
+			foreach (var sv in DuLieuMauSinhVien.danhsachsinhvienmau) {
 				if (sv.malop == malop) {
 					danhsachmau.Add(new SinhVien {TenSinhVien = sv.ten, MaSoSinhVien = sv.mssv, DiemSinhVien = sv.diem});
 				}
@@ -497,10 +439,18 @@ namespace DoAn_QuanLySinhVien {
 			float tongdiem = 0f;
 			for (int i = 0; i < this.soluongsinhvien; i++) {
 				float diemsinhvien = this.danhsachsinhvien[i].DiemSinhVien;
-				if (diemsinhvien > 8.5) so_hsg++;
-				else if (diemsinhvien > 7.0) so_hsk++;
-				else if (diemsinhvien > 5.0) so_hstb++;
-				else so_hsy++;
+				if (diemsinhvien > 8.5) {
+					so_hsg++;
+				}
+				else if (diemsinhvien > 7.0) {
+					so_hsk++;
+				}
+				else if (diemsinhvien > 5.0) {
+					so_hstb++;
+				}
+				else {
+					so_hsy++;
+				}
 				tongdiem += diemsinhvien;
 			}
 			float diemtrungbinhlop = tongdiem / this.soluongsinhvien;
@@ -560,7 +510,7 @@ namespace DoAn_QuanLySinhVien {
 		public void InDanhSachSinhVien() {
 			Mau.InThanhCong("Danh sách sinh viên\n");
 			Console.WriteLine($"{"STT",-5} {"Tên sinh viên",-25} {"Mã số",-15} {"Điểm",-6} {"Học lực",-10}");
-			Console.WriteLine(new string('-', 65));
+			Console.WriteLine(new string('─', 65));
 			for (int i = 0; i < this.danhsachsinhvien.Count; i++) {
 				this.danhsachsinhvien[i].XuatThongTin(i + 1);
 			}

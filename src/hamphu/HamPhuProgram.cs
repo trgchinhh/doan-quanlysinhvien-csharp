@@ -44,7 +44,9 @@ namespace DoAn_QuanLySinhVien {
 					_ => ""
 				})
 			);
-			if (luachonmau == 8) Environment.Exit(0);
+			if (luachonmau == 8) {
+				Environment.Exit(0);
+			}
 			return Mau.danhsachmau[luachonmau - 1];
 		}
 	}

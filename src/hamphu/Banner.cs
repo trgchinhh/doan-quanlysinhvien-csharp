@@ -43,6 +43,18 @@ namespace DoAn_QuanLySinhVien {
                                         - ĐỀ TÀI: XÂY DỰNG CHƯƠNG TRÌNH QUẢN LÝ SINH VIÊN 
         ";
 
+        public static string BannerGiangVien = @"   _____ _____          _   _  _____  __      _______ ______ _   _ 
+  / ____|_   _|   /\   | \ | |/ ____| \ \    / /_   _|  ____| \ | |
+ | |  __  | |    /  \  |  \| | |  __   \ \  / /  | | | |__  |  \| |
+ | | |_ | | |   / /\ \ | . ` | | |_ |   \ \/ /   | | |  __| | . ` |
+ | |__| |_| |_ / ____ \| |\  | |__| |    \  /   _| |_| |____| |\  |
+  \_____|_____/_/    \_\_| \_|\_____|     \/   |_____|______|_| \_|
+ 
+                                        - GVHD: TRẦN QUỐC TRƯỜNG
+                                        - SVTH: NGUYỄN BẢO LAM
+                                        - ĐỀ TÀI: XÂY DỰNG CHƯƠNG TRÌNH QUẢN LÝ SINH VIÊN 
+        "; 
+
         public static string BannerDangKy = @" _____          _   _  _____   _  ____     __
 |  __ \   /\   | \ | |/ ____| | |/ /\ \   / /
 | |  | | /  \  |  \| | |  __  | ' /  \ \_/ / 

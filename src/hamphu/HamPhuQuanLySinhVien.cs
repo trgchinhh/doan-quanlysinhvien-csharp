@@ -9,10 +9,18 @@ namespace DoAn_QuanLySinhVien {
     internal class HamPhuQuanLySinhVien {
         // hàm phụ cho file quản lý sinh viên 
         public static int LayMaHocLuc(float diem) {
-            if (diem > 8.5f) return 1;
-            if (diem > 7.0f) return 2;
-            if (diem > 5.0f) return 3;
-            if (diem > 2.0f) return 4;
+            if (diem > 8.5f) {
+                return 1;
+            }
+            if (diem > 7.0f) {
+                return 2;
+            }
+            if (diem > 5.0f) {
+                return 3;
+            }
+            if (diem > 2.0f) {
+                return 4;
+            }
             return 5;
         }
 

@@ -24,10 +24,11 @@ public class Program {
 			Console.WriteLine("  (↑ ↓) MENU");
 			var luachon = AnsiConsole.Prompt(
 				new SelectionPrompt<int>()
-				.AddChoices(1, 2, 3, 4)
+				.AddChoices(0, 1, 2, 3, 4)
 				.WrapAround(true)
 				.HighlightStyle(new Style(luachonmau))
 				.UseConverter(x => x switch {
+					0 => Markup.Escape("[00] Thông tin"),
 					1 => Markup.Escape("[01] Đăng nhập"),
 					2 => Markup.Escape("[02] Đăng ký"),
 					3 => Markup.Escape("[03] Xem tài khoản giảng viên"),
@@ -36,13 +37,16 @@ public class Program {
 				})
 			);
 			Console.WriteLine();
-			if (luachon == 1) {
+			if(luachon == 0){
+				ThongTin.InThongTin();
+				continue;
+			} else if (luachon == 1) {
 				GiangVien? giangvien = quanlygiangvien.DangNhap();
 				if (giangvien == null) {
 					Mau.InCanhBao("Đăng nhập không thành công, vui lòng thử lại !");
 				}
 				else {
-					MenuQuanLySinhVien(giangvien, ref luachonmau);
+					MenuGiangVien(giangvien, quanlygiangvien, ref luachonmau);
 				}
 			}
 			else if (luachon == 2) {
@@ -55,6 +59,78 @@ public class Program {
 				Console.Clear();
 				Banner.Inbanner(Banner.BannerTamBiet);
 				break;
+			}
+			HamPhuProgram.DungChuongTrinh();
+		}
+	}
+
+	private static void MenuGiangVien(GiangVien giangvien, QuanLyGiangVien quanlygiangvien, ref Color luachonmau) {
+		int luachontruoc = 1;
+		while (true) {
+			Console.Clear();
+			Banner.Inbanner(Banner.BannerGiangVien);
+			HamPhuQuanLyGiangVien.InTieuDe(giangvien);
+			List<int> danhsachchon = new List<int>();
+			for (int i = 1; i <= giangvien.SoLopDay; i++) {
+				danhsachchon.Add(i);
+			}
+			// không dùng menu mặc định vì sẽ bị đôn lên khi giảng viên dạy n lớp
+			// số lượng lớp không mặc định được
+			int suathongtin = giangvien.SoLopDay + 1;
+			int suasolop = giangvien.SoLopDay + 2;
+			int dangxuat = giangvien.SoLopDay + 3;
+			danhsachchon.Add(suathongtin);
+			danhsachchon.Add(suasolop);
+			danhsachchon.Add(dangxuat);
+			Console.WriteLine("  (↑ ↓) MENU");
+			var luachon = AnsiConsole.Prompt(
+				new SelectionPrompt<int>()
+				.AddChoices(danhsachchon)
+				.WrapAround(true)
+				.HighlightStyle(new Style(luachonmau))
+				.DefaultValue(luachontruoc)
+				.UseConverter(x => x switch {
+					_ when x <= giangvien.SoLopDay 
+						=> Markup.Escape("[" + x.ToString("D2") + "] Quản lý lớp " + x),
+					_ when x == suathongtin 
+						=> Markup.Escape("[" + x.ToString("D2") + "] Sửa thông tin giảng viên"),
+					_ when x == suasolop 
+						=> Markup.Escape("[" + x.ToString("D2") + "] Sửa số lớp dạy"),
+					_ when x == dangxuat 
+						=> Markup.Escape("[" + x.ToString("D2") + "] Đăng xuất"),
+					_ => ""
+				})
+			);
+			luachontruoc = luachon;
+			Console.WriteLine();
+			if (luachon >= 1 && luachon <= giangvien.SoLopDay) {
+				if (luachon <= giangvien.DanhSachLop.Count) {
+					Lop lop = giangvien.DanhSachLop[luachon - 1];
+					GiangVien gvtheolop = new GiangVien(
+						giangvien.MaGiangVien,
+						giangvien.TenGiangVien,
+						giangvien.MatKhau,
+						lop.MaLop,
+						lop.TenLop
+					);
+					MenuQuanLySinhVien(gvtheolop, ref luachonmau);
+				}
+				else {
+					Mau.InCanhBao("Lớp này chưa có thông tin. Chọn Sửa số lớp dạy để khai báo lớp trước.");
+				}
+			}
+			else if (luachon == suathongtin) {
+				quanlygiangvien.SuaThongTinGiangVien(giangvien);
+			}
+			else if (luachon == suasolop) {
+				quanlygiangvien.SuaSoLopDay(giangvien);
+			}
+			else if (luachon == dangxuat) {
+				Mau.InThanhCong($"Tạm biệt giảng viên {giangvien.TenGiangVien} !");
+				return;
+			}
+			else {
+				Mau.InCanhBao("(!) Vui lòng chọn đúng !");
 			}
 			HamPhuProgram.DungChuongTrinh();
 		}

@@ -17,7 +17,7 @@ namespace DoAn_QuanLySinhVien {
             AnsiConsole.Write(
                 new Panel(
                     "[yellow]Tài khoản mẫu[/]\n" +
-                    "[yellow] - Mã tài khoản:[/] GV001 / GV002 / GV003\n" + 
+                    "[yellow] - Mã tài khoản:[/] GV001/GV002/GV003/GV004/GV005\n" + 
                     "[yellow] - Mật khẩu:[/] 123456"
                 )
                 .Header($"Đăng nhập giảng viên (lần {lanthu}/[red]{soluonglanthu}[/])")
@@ -40,8 +40,12 @@ namespace DoAn_QuanLySinhVien {
 
         // nhập mật khẩu mà không hiện ký tự lên màn hình
         public static string NhapMatKhau(int lan) {
-            if(lan == 1) Console.Write("(?) Nhập mật khẩu: ");
-            if(lan == 2) Console.Write("(?) Xác nhận mật khẩu: ");
+            if (lan == 1) {
+                Console.Write("(?) Nhập mật khẩu: ");
+            }
+            if (lan == 2) {
+                Console.Write("(?) Xác nhận mật khẩu: ");
+            }
             if (Console.IsInputRedirected) {
                 return Console.ReadLine()!.Trim();
             }

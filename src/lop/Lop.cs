@@ -8,6 +8,9 @@ namespace DoAn_QuanLySinhVien {
 	internal class Lop {
 		private string malop = "";
 		private string tenlop = "";
+		private string tenlopgoc = "";
+		private int sothutu = 0;
+		private string magiangvien = "";
 
 		public Lop() {
 			this.malop = "";
@@ -17,6 +20,7 @@ namespace DoAn_QuanLySinhVien {
 		public Lop(string malop, string tenlop) {
 			this.MaLop = malop;
 			this.TenLop = tenlop;
+			this.TenLopGoc = tenlop;
 		}
 
 		public string MaLop {
@@ -39,10 +43,29 @@ namespace DoAn_QuanLySinhVien {
 			}
 		}
 
+		public string TenLopGoc {
+			get { return this.tenlopgoc; }
+			set {
+				if (!string.IsNullOrEmpty(value)) {
+					this.tenlopgoc = value;
+				}
+			}
+		}
+
+		public int SoThuTu {
+			get { return this.sothutu; }
+			set { this.sothutu = value; }
+		}
+
+		public string MaGiangVien {
+			get { return this.magiangvien; }
+			set { this.magiangvien = value; }
+		}
+
 		// Phương thức 
 		// tên lớp đầy đủ (mã lớp - tên lớp) phục vụ in ra màn hình
 		public string LayTenLopDayDu() {
-			return $"{this.MaLop} - {this.TenLop}";
+			return $"{this.MaLop} ({this.TenLop})";
 		}
 	}
 }

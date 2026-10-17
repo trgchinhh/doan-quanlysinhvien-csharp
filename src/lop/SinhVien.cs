@@ -80,13 +80,13 @@ namespace DoAn_QuanLySinhVien {
 					return false;
 				}
 				this.TenSinhVien = ten;
-				Console.Write("(?) Nhập mã số: DH524000");
+				Console.Write("(?) Nhập mã số: DH");
 				string maso = Console.ReadLine()!.Trim();
 				if (maso.Length == 0) {
 					Mau.InCanhBao("Bỏ trống mã số, hủy nhập sinh viên !");
 					return false;
 				}
-				this.MaSoSinhVien = "DH524000" + maso;
+				this.MaSoSinhVien = "DH" + maso;
 				float diem;
 				while (true) {
 					Console.Write("(?) Nhập điểm (dùng ',' thay vì '.'): ");
