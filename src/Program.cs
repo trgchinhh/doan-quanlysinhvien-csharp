@@ -9,6 +9,7 @@ public class Program {
 		Banner.Inbanner(Banner.BannerDoAnTinHoc);
 		QuanLyGiangVien quanlygiangvien = new QuanLyGiangVien();
 		var luachonmau = HamPhuProgram.ChonMau();
+		int luachontruoc = 0;
 		while (true) {
 			Console.Clear();
 			Banner.Inbanner(Banner.BannerXacThuc);
@@ -27,6 +28,7 @@ public class Program {
 				.AddChoices(0, 1, 2, 3, 4)
 				.WrapAround(true)
 				.HighlightStyle(new Style(luachonmau))
+				.DefaultValue(luachontruoc)
 				.UseConverter(x => x switch {
 					0 => Markup.Escape("[00] Thông tin"),
 					1 => Markup.Escape("[01] Đăng nhập"),
@@ -36,6 +38,7 @@ public class Program {
 					_ => ""
 				})
 			);
+			luachontruoc = luachon;
 			Console.WriteLine();
 			if(luachon == 0){
 				ThongTin.InThongTin();
