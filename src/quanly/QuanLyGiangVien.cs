@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace DoAn_QuanLySinhVien {
 	internal class QuanLyGiangVien {
 		private List<GiangVien> danhsachgiangvien = new List<GiangVien>();
-		private List<Lop> danhsachlop = new List<Lop>();
 		private Dulieu dulieu = new Dulieu();
 		private const int solandangnhaptoida = 3;
 
@@ -21,54 +20,26 @@ namespace DoAn_QuanLySinhVien {
 			HamPhuProgram.DungChuongTrinh();
 		}
 
-		// nạp lại lớp + giảng viên từ tệp dữ liệu (sau khi đăng ký tài khoản mới)
+		// nạp lại giảng viên từ tệp dữ liệu (sau khi đăng ký tài khoản mới)
 		public void NapLaiDanhSach() {
-			this.danhsachlop = dulieu.NapDanhSachLop();
 			this.danhsachgiangvien = dulieu.NapDanhSachGiangVien();
 		}
 
-		// nạp lớp + giảng viên, nếu tệp dữ liệu chưa có thì nạp dữ liệu mẫu
+		// nạp giảng viên, nếu tệp dữ liệu chưa có thì nạp dữ liệu mẫu
 		private void Napdulieulopvagiangvien() {
 			try {
 				this.NapLaiDanhSach();
-				if (this.danhsachlop.Count == 0) {
-					Mau.InCanhBao("Tệp dữ liệu chưa có lớp và giảng viên, đang nạp dữ liệu mẫu ...");
-					List<Lop> danhsachlopgoc = new List<Lop>(DuLieuMauGiangVien.danhsachlopmau);
-					this.danhsachlop = new List<Lop>();
+				if (this.danhsachgiangvien.Count == 0) {
+					Mau.InCanhBao("Tệp dữ liệu chưa có giảng viên, đang nạp dữ liệu mẫu ...");
 					this.danhsachgiangvien = new List<GiangVien>(DuLieuMauGiangVien.danhsachgiangvienmau);
-					for (int i = 0; i < this.danhsachgiangvien.Count; i++) {
-						GiangVien gv = this.danhsachgiangvien[i];
-						string malopgoc = gv.MaLop;
-						string tenlopgoc = "";
-						foreach (Lop lopgoc in danhsachlopgoc) {
-							if (lopgoc.MaLop == malopgoc) {
-								tenlopgoc = lopgoc.TenLop;
-								break;
-							}
-						}
-						gv.DanhSachLop.Clear();
-						gv.SoLopDay = 3;
-						for (int j = 1; j <= 3; j++) {
-						Lop lopmoi = new Lop(malopgoc + j, tenlopgoc + " - Lớp " + j);
-						lopmoi.TenLopGoc = tenlopgoc;
-							lopmoi.MaGiangVien = gv.MaGiangVien;
-							lopmoi.SoThuTu = j;
-							this.danhsachlop.Add(lopmoi);
-							gv.DanhSachLop.Add(lopmoi);
-							if (j == 1) {
-								gv.MaLop = lopmoi.MaLop;
-								gv.TenLop = lopmoi.TenLop;
-							}
-						}
-					}
-					dulieu.LuuDuLieu(this.danhsachlop, this.danhsachgiangvien);
+					dulieu.LuuDuLieu(this.danhsachgiangvien);
 					Mau.InThanhCong("Đã nạp xong !");
 				}
 				QuanLySinhVien.NapDuLieuMauTatCaLop(this.danhsachgiangvien, dulieu);
 			}
 			catch (Exception ex) {
 				Mau.InLoi($"Lỗi nạp dữ liệu giảng viên: {ex.Message}");
-				Mau.InCanhBao("Kiểm tra thư mục database và các tệp dữ liệu.");
+				Mau.InCanhBao("Kiểm tra thư mục dulieu và các tệp dữ liệu.");
 			}
 		}
 
@@ -130,12 +101,10 @@ namespace DoAn_QuanLySinhVien {
 			}
 
 			var giangvienmoi = new GiangVien(magiangvien, tengiangvien, matkhau, lop.MaLop, lop.TenLop);
-			lop.MaGiangVien = magiangvien;
-			lop.SoThuTu = 1;
 			giangvienmoi.SoSinhVienLop = 0;
 			try {
 				this.danhsachgiangvien.Add(giangvienmoi);
-				dulieu.LuuDuLieu(this.danhsachlop, this.danhsachgiangvien);
+				dulieu.LuuDuLieu(this.danhsachgiangvien);
 			}
 			catch (Exception ex) {
 				this.danhsachgiangvien.Remove(giangvienmoi);
@@ -155,7 +124,7 @@ namespace DoAn_QuanLySinhVien {
 		}
 
 		// Các hàm chính 
-		// đăng nhập bằng tài khoản giảng viên, trả về null nếu đăng nhập thất bại
+		// đăng nhập bằng tài khoản giảng viên 
 		public GiangVien? DangNhap() {
 			for (int lanthu = 1; lanthu <= solandangnhaptoida; lanthu++) {
 				Console.Clear();
@@ -230,7 +199,6 @@ namespace DoAn_QuanLySinhVien {
 				return null;
 			}
 			var lopmoi = new Lop(malop, tenlop);
-			this.danhsachlop.Add(lopmoi);
 			Mau.InThanhCong($"Đã tạo lớp mới {lopmoi.LayTenLopDayDu()}");
 			return lopmoi;
 		}
@@ -248,10 +216,8 @@ namespace DoAn_QuanLySinhVien {
 		//lớp đã có giảng viên phụ trách chưa (mỗi lớp chỉ 1 giảng viên)
 		private bool LopDaCoGiangVien(string malop) {
 			for(int i = 0; i < this.danhsachgiangvien.Count; i++){
-				foreach (Lop lop in this.danhsachgiangvien[i].DanhSachLop) {
-					if(this.danhsachgiangvien[i].MaLop == malop || lop.MaLop == malop){
-						return true;
-					}
+				if(this.danhsachgiangvien[i].MaLop == malop){
+					return true;
 				}
 			}
 			return false;
@@ -263,39 +229,15 @@ namespace DoAn_QuanLySinhVien {
 			if (tenmoi != "") {
 				giangvien.TenGiangVien = tenmoi;
 			}
-			this.dulieu.LuuDuLieu(this.danhsachlop, this.danhsachgiangvien);
+			this.dulieu.LuuDuLieu(this.danhsachgiangvien);
 			Mau.InThanhCong("Đã lưu thông tin giảng viên");
-		}
-
-		public void SuaSoLopDay(GiangVien giangvien) {
-			Console.Write("Nhập số lớp muốn dạy: ");
-			if (!int.TryParse(Console.ReadLine(), out int solopmoi) || solopmoi < 1) {
-				Mau.InCanhBao("Số lớp phải từ 1 trở lên");
-				return;
-			}
-			while (giangvien.DanhSachLop.Count < solopmoi) {
-				Lop? lop = this.NhapLopPhuTrach();
-				if (lop == null) {
-					return;
-				}
-				lop.MaGiangVien = giangvien.MaGiangVien;
-				lop.SoThuTu = giangvien.DanhSachLop.Count + 1;
-				giangvien.DanhSachLop.Add(lop);
-			}
-			giangvien.SoLopDay = solopmoi;
-			this.dulieu.LuuDuLieu(this.danhsachlop, this.danhsachgiangvien);
-			Mau.InThanhCong("Đã lưu số lớp giảng dạy");
 		}
 
 		// hàm tính tổng sinh viên của giảng viên 
         public int TinhVaIn(bool coin = false){
         	int tongsinhvien = 0;
             for (int i = 0; i < this.danhsachgiangvien.Count; i++) {
-                int sosinhvien = 0;
-                for (int j = 0; j < this.danhsachgiangvien[i].DanhSachLop.Count 
-                      && j < this.danhsachgiangvien[i].SoLopDay; j++) {
-                    sosinhvien += dulieu.NapDanhSachSinhVien(this.danhsachgiangvien[i].DanhSachLop[j].MaLop).Count;
-                }
+                int sosinhvien = dulieu.NapDanhSachSinhVien(this.danhsachgiangvien[i].MaLop).Count;
             	tongsinhvien += sosinhvien;
                 if(coin){
 	                this.danhsachgiangvien[i].XuatThongTinTaiKhoan(i + 1, sosinhvien);
@@ -326,7 +268,7 @@ namespace DoAn_QuanLySinhVien {
 			}
 			Console.WriteLine();
 			Mau.InThanhCong(
-				$"Tổng cộng {this.danhsachlop.Count} lớp và {this.danhsachgiangvien.Count} tài khoản giảng viên"
+				$"Tổng cộng {this.danhsachgiangvien.Count} lớp và {this.danhsachgiangvien.Count} tài khoản giảng viên"
 			);
 		}
 	}

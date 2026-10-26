@@ -19,19 +19,17 @@ namespace DoAn_QuanLySinhVien {
         │ Giới thiệu                                                                       │
         │                                                                                  │
         │ Chương trình mô phỏng các vận hành của các ứng dụng/web quản lý sinh viên trong  │
-        │ thực tế gồm nhiều tài khoản thầy cô vào quản lý nhiều lớp của mình gồm nhiều     │
-        │ tính năng cơ bản của một hệ thống quản lý. Ngoài ra, chương trình còn phân chia  │
+        │ thực tế gồm nhiều tài khoản thầy cô, mỗi thầy cô quản lý một lớp của mình gồm    │
+        │ nhiều tính năng cơ bản của một hệ thống quản lý. Ngoài ra, chương trình còn      │
         │ lưu trữ tên lớp, sinh viên từng lớp vào database local bằng các file text (.txt) │
-        │ theo từng folder tên giảng viên. Bên cạnh đó chương trình còn dùng SHA256 để băm │
-        │ password như hệ thống thật.                                                      │
+        │ theo từng folder tên giảng viên.                                                 │
         ├──────────────────────────────────────────────────────────────────────────────────┤
         │ Tìm hiểu nghiệp vụ cơ bản                                                        │
         │                                                                                  │
         │ - Quản lý tài khoản giảng viên: đăng nhập, đăng xuất và cập nhật thông tin       │
         │   giảng viên                                                                     │
-        │ - Quản lý nhiều lớp học cho mỗi giảng viên                                       │
-        │ - Lưu thông tin lớp học gồm mã lớp, tên lớp, giảng viên phụ trách                │
-        │   và số thứ tự lớp                                                               │
+        │ - Quản lý một lớp học cho mỗi giảng viên                                         │
+        │ - Lưu thông tin lớp học gồm mã lớp, tên lớp và giảng viên phụ trách              │
         │ - Quản lý danh sách sinh viên theo từng lớp                                      │
         │ - Lưu thông tin sinh viên gồm họ tên, mã số sinh viên và điểm                    │
         │ - Thêm sinh viên mới vào lớp                                                     │
@@ -41,9 +39,7 @@ namespace DoAn_QuanLySinhVien {
         │ - Tìm kiếm thông tin sinh viên theo tên, mã số (chưa)                            │
         │ - Lọc sinh viên theo tên, mã số, điểm hoặc học lực                               │
         │ - Sắp xếp danh sách sinh viên theo tên, mã số hoặc điểm                          │
-        │ - Thống kê sĩ số, điểm trung bình, điểm cao nhất và điểm thấp nhất của 1 lớp     │
-        │ - Thống kê sĩ số, điểm trung bình, điểm cao nhất và thấp nhất các lớp của        │
-        │   giảng viên (chưa)                                                              │
+        │ - Thống kê sĩ số, điểm trung bình, điểm cao nhất và điểm thấp nhất của lớp       │
         │ - Tự động sao lưu dữ liệu vào các tệp văn bản để sử dụng lại khi mở chương trình │
         ├──────────────────────────────────────────────────────────────────────────────────┤
         │ Ưu điểm                                                                          │
@@ -66,8 +62,7 @@ namespace DoAn_QuanLySinhVien {
             Console.Clear();
             string[] cacdong = thongtin.Split('\n');
             int sodongtungtrang = Console.WindowHeight - 2;
-            int tongtrang = cacdong.Length / sodongtungtrang;
-            int tongsotrang = (int)Math.Ceiling((double)tongtrang);
+            int tongsotrang = (int)Math.Ceiling((double)cacdong.Length / sodongtungtrang);
             int tranghientai = 1;
             int dem = 0;
             foreach (string dong in cacdong) {
@@ -86,6 +81,9 @@ namespace DoAn_QuanLySinhVien {
                     tranghientai++;
                 }
             }
+            Console.WriteLine();
+            Console.WriteLine($"-- Hết ({tranghientai}/{tongsotrang}). Nhấn phím bất kỳ để quay lại --");
+            Console.ReadKey(true);
         }
     }
 }
@@ -100,16 +98,16 @@ Hạn nộp: Cuối học kỳ 1
 
 Giới thiệu
 Chương trình mô phỏng các vận hành của các ứng dụng/web quản lý sinh viên trong thực tế
-gồm nhiều tài khoản thầy cô vào quản lý nhiều lớp của mình gồm nhiều tính năng cơ bản của một 
-hệ thống quản lý, không chỉ vậy, chương trình còn phân chia lưu trữ tên lớp, sinh viên từng 
-lớp vào database local bằng và các file text (có đuôi .txt) theo từng folder tên giảng viên.
+gồm nhiều tài khoản thầy cô, mỗi thầy cô quản lý một lớp của mình gồm nhiều tính năng cơ
+bản của một hệ thống quản lý, không chỉ vậy, chương trình còn phân chia lưu trữ tên lớp, sinh
+viên của lớp vào database local bằng và các file text (có đuôi .txt) theo từng folder giảng viên.
 Bên cạnh đó chương trình còn dùng SHA256 để băm password như hệ thống thật 
 
 Tìm hiểu nghiệp vụ cơ bản 
 - Quản lý tài khoản giảng viên: đăng nhập, đăng xuất và cập nhật thông tin giảng viên 
-- Quản lý nhiều lớp học cho mỗi giảng viên
-- Lưu thông tin lớp học gồm mã lớp, tên lớp, giảng viên phụ trách và số thứ tự lớp
-- Quản lý danh sách sinh viên theo từng lớp
+- Quản lý một lớp học cho mỗi giảng viên
+- Lưu thông tin lớp học gồm mã lớp, tên lớp và giảng viên phụ trách
+- Quản lý danh sách sinh viên của lớp
 - Lưu thông tin sinh viên gồm họ tên, mã số sinh viên và điểm
 - Thêm sinh viên mới vào lớp
 - Sửa thông tin sinh viên
@@ -118,8 +116,7 @@ Tìm hiểu nghiệp vụ cơ bản
 - Tìm kiếm thông tin sinh viên theo tên, mã số (chưa)
 - Lọc sinh viên theo tên, mã số, điểm hoặc học lực
 - Sắp xếp danh sách sinh viên theo tên, mã số hoặc điểm
-- Thống kê sĩ số, điểm trung bình, điểm cao nhất và điểm thấp nhất của 1 lớp
-- Thống kê sĩ số, điểm trung bình, điểm cao nhất và thấp nhất các lớp của giảng viên (chưa)
+- Thống kê sĩ số, điểm trung bình, điểm cao nhất và điểm thấp nhất của lớp
 - Tự động sao lưu dữ liệu vào các tệp văn bản để sử dụng lại khi mở chương trình
 
 Ưu điểm

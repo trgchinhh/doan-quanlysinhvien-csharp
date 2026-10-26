@@ -20,6 +20,8 @@ namespace DoAn_QuanLySinhVien {
 			/*9*/ Color.Magenta 
 		};
 
+		public static Color Maumacdinh = Color.Default;
+
 		public static void ToMau(string noidung, Color mau, bool xuongdong = false) {
 			Console.ForegroundColor = mau;
 			if (xuongdong){

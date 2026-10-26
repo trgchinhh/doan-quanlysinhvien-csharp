@@ -22,16 +22,12 @@ namespace DoAn_QuanLySinhVien {
 
 		public static void NapDuLieuMauTatCaLop(List<GiangVien> danhsachgiangvien, Dulieu dulieu) {
 			foreach (GiangVien giangvien in danhsachgiangvien) {
-				foreach (Lop lop in giangvien.DanhSachLop) {
-					List<SinhVien> danhsachsinhvien = dulieu.NapDanhSachSinhVien(lop.MaLop);
-					if (danhsachsinhvien.Count == 0) {
-						danhsachsinhvien = TaoDanhSachSinhVienMau(lop.MaLop);
-					}
-					dulieu.LuuDanhSachSinhVien(danhsachsinhvien, lop.MaLop);
-					if (lop.MaLop == giangvien.MaLop) {
-						giangvien.SoSinhVienLop = danhsachsinhvien.Count;
-					}
+				List<SinhVien> danhsachsinhvien = dulieu.NapDanhSachSinhVien(giangvien.MaLop);
+				if (danhsachsinhvien.Count == 0) {
+					danhsachsinhvien = TaoDanhSachSinhVienMau(giangvien.MaLop);
 				}
+				dulieu.LuuDanhSachSinhVien(danhsachsinhvien, giangvien.MaLop);
+				giangvien.SoSinhVienLop = danhsachsinhvien.Count;
 			}
 		}
 
@@ -185,7 +181,7 @@ namespace DoAn_QuanLySinhVien {
 				tenthay = tencu;
 			}
 			else if (tenthay != tencu) {
-				danhsachthaydoi.Add($"tên: \"{tencu}\" -> \"{tenthay}\"");
+				danhsachthaydoi.Add($"tên: '{tencu}' -> '{tenthay}'");
 			}
 			sinhvien.TenSinhVien = tenthay;
 

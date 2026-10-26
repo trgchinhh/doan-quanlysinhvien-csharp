@@ -12,8 +12,6 @@ namespace DoAn_QuanLySinhVien {
 		private string malop = "";
 		private string tenlop = "";
 		private int sosinhvienlop = 0;
-		private int solopday = 1;
-		private List<Lop> danhsachlop = new List<Lop>();
 
 		public GiangVien() {
 			this.magiangvien = "";
@@ -22,8 +20,6 @@ namespace DoAn_QuanLySinhVien {
 			this.malop = "";
 			this.tenlop = "";
 			this.sosinhvienlop = 0;
-			this.solopday = 3; // số lớp dạy mặc định khi chạy chương trình 
-							   // mỗi giảng viên dạy 3 lớp 
 		}
 
 		public GiangVien(string magiangvien, string tengiangvien, string matkhau, string malop, string tenlop) {
@@ -32,9 +28,6 @@ namespace DoAn_QuanLySinhVien {
 			this.MatKhau = matkhau;
 			this.MaLop = malop;
 			this.TenLop = tenlop;
-			if (this.MaLop != "") {
-				this.danhsachlop.Add(new Lop(this.MaLop, this.TenLop));
-			}
 		}
 
 		public string MaGiangVien {
@@ -91,20 +84,6 @@ namespace DoAn_QuanLySinhVien {
 			}
 		}
 
-		public int SoLopDay {
-			get { return this.solopday; }
-			set {
-				if (value >= 0) {
-					this.solopday = value;
-				}
-			}
-		}
-
-		public List<Lop> DanhSachLop {
-			get { return this.danhsachlop; }
-			set { this.danhsachlop = value; }
-		}
-
 		// số sinh viên đang có trong lớp của giảng viên
 		public int SoSinhVienLop {
 			get { return this.sosinhvienlop; }
@@ -130,27 +109,18 @@ namespace DoAn_QuanLySinhVien {
 			Mau.ToMau($"{this.SoSinhVienLop}", Mau.danhsachmau[4]);
 			Console.WriteLine(" (sinh viên)");
 			Console.Write("  - Lớp: ");
-			if (this.DanhSachLop.Count > 0) {
-				Mau.ToMau(this.DanhSachLop[0].LayTenLopDayDu(), Mau.danhsachmau[3], true);
-			}
-			else {
-				Mau.ToMau(this.LayTenLopDayDu(), Mau.danhsachmau[3], true);
-			}
+			Mau.ToMau(this.LayTenLopDayDu(), Mau.danhsachmau[3], true);
 		}
 
 		// in thông tin tài khoản giảng viên + lớp phụ trách (dùng ở màn hình đăng nhập)
 		public void XuatThongTinTaiKhoan(int sothutu, int sosinhvienlop) {
-			string tenlopgoc = this.TenLop;
-			if (this.DanhSachLop.Count > 0) {
-				tenlopgoc = this.DanhSachLop[0].TenLopGoc;
-			}
 			Console.WriteLine(
 				"{0,-5} {1,-10} {2,-20} {3,-10} {4,-34} {5,-12}",
 				sothutu,
 				this.MaGiangVien,
 				this.TenGiangVien,
 				this.MaLop,
-				tenlopgoc,
+				this.TenLop,
 				$"{sosinhvienlop} sinh viên"
 			);
 		}

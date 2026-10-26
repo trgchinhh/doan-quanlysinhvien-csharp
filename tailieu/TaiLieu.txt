@@ -1,0 +1,198 @@
+﻿BÁO CÁO ĐỒ ÁN TIN HỌC
+
+
+THÔNG TIN
+
+- Giáo viên hướng dẫn: Trần Quốc Trường
+- Sinh viên thực hiện: Nguyễn Bảo Lam
+- Đề tài: Xây dựng chương trình quản lý sinh viên
+- Ngôn ngữ: C# (Console)
+- Deadline: Cuối học kỳ I
+    + Yêu cầu: Không dùng lưu trữ database chỉ lưu trên file text (.txt)
+
+
+1. GIỚI THIỆU ĐỀ TÀI
+
+Đây là chương trình quản lý sinh viên bằng Console dùng ngôn ngữ C#, đồ án mô phỏng chương trình chưa sát với thực tế, chương trình cho nhiều tài khoản giảng viên với mỗi tài khoản giảng viên chỉ quản lý 1 môn học và 1 lớp học tương ứng với môn học đó
+
+
+2. MỤC TIÊU VÀ PHẠM VI
+
+2.1 Mục tiêu
+- Vận dụng lập trình hướng đối tượng để mô hình hóa giảng viên, lớp học và sinh viên
+- Thực hành đọc, ghi và tổ chức dữ liệu trên file .txt
+- Xây dựng các chức năng thêm, xem, sửa, xóa, lọc, sắp xếp và thống kê sinh viên
+- Tạo giao diện Console có menu điều hướng và thông báo cho người dùng
+- Tranh Crash chương trình khi người dùng nhập dữ liệu hoặc lựa chọn không hợp lệ
+
+2.2 Phạm vi
+- Một giảng viên dạy một môn quản lý một lớp
+- Mỗi sinh viên có họ tên, học lực, mã số và điểm
+
+3. YÊU CẦU HỆ THỐNG
+
+3.1 Các chức năng đã làm
+- Hiển thị thông tin đề tài
+- Khởi tạo dữ liệu mẫu giảng viên, lớp và sinh viên khi dữ liệu chưa có
+- Đăng nhập, đăng ký và xem danh sách tài khoản giảng viên mẫu
+- Mỗi lớp chỉ được gắn với một giảng viên khi đăng ký
+- Cho phép giảng viên sửa tên hiển thị và đăng xuất
+- Xem danh sách sinh viên của lớp đang đăng nhập
+- Thêm, sửa và xóa sinh viên (mã sinh viên không được trùng trong cùng lớp)
+- Lọc theo chữ cái đầu của tên gọi, khoảng điểm, học lực hoặc khoảng mã số
+- Sắp xếp theo tên gọi tăng/giảm, mã số tăng dần hoặc điểm tăng/giảm
+- Thống kê sĩ số, số lượng theo nhóm học lực, điểm trung bình, điểm cao nhất và thấp nhất
+- Ghi dữ liệu thay đổi vào tệp để có thể nạp lại ở lần chạy sau
+
+3.2 Các chức năng tự tìm hiểu
+- Menu có thể điều khiển bằng phím mũi tên và Enter (dùng thư viện Spectre hỗ trợ TUI)
+- Phân bổ dữ liệu dễ đọc, có thể kiểm tra trực tiếp bằng trình soạn thảo văn bản
+
+4. CÔNG NGHỆ VÀ CẤU TRÚC CHƯƠNG TRÌNH
+
+4.1 Các thành phần chính
+- Program.cs: điểm bắt đầu (hiển thị menu tài khoản, menu giảng viên và menu quản lý sinh viên)
+- GiangVien.cs, SinhVien.cs, Lop.cs: các lớp mô hình dữ liệu
+- QuanLyGiangVien.cs: đăng nhập, đăng ký, cập nhật thông tin giảng viên và quản lý luồng tài khoản
+- QuanLySinhVien.cs: nạp dữ liệu và thực hiện nghiệp vụ danh sách sinh viên
+- Dulieu.cs: tạo thư mục, đọc và ghi các tệp dữ liệu
+- DuLieuMauGiangVien.cs, DuLieuMauSinhVien.cs: khai báo dữ liệu mẫu trong mã nguồn
+- HamPhu*: các hàm hỗ trợ nhập liệu, trình bày và xử lý phụ trợ
+- Mau.cs, Banner.cs: màu sắc, thông báo và tiêu đề giao diện
+- ThongTin.cs: nội dung giới thiệu hiển thị trong chương trình
+
+4.2 Mô hình xử lý
+Chương trình dùng danh sách List<> để làm việc với dữ liệu trong bộ nhớ
+Khi khởi động hoặc mở một lớp, dữ liệu được đọc từ tệp thành các đối tượng
+Khi có thao tác thay đổi, danh sách được ghi lại xuống tệp
+Dữ liệu trong các tệp là nguồn lưu trữ lâu dài
+
+5. THIẾT KẾ DỮ LIỆU
+
+5.1 Các thực thể (Các class)
+- Giảng viên: mã giảng viên, tên giảng viên, mật khẩu, mã lớp và tên lớp phụ trách
+- Lớp: mã lớp, tên lớp và giảng viên phụ trách
+- Sinh viên: họ tên, mã số sinh viên và điểm
+Học lực được chương trình suy ra từ điểm khi hiển thị
+
+Quan hệ:
+- Một giảng viên phụ trách một lớp (một lớp có nhiều sinh viên)
+- Mã lớp được dùng để xác định tệp danh sách sinh viên tương ứng
+
+5.2 Tổ chức tệp
+Cấu trúc được tạo trong thư mục làm việc khi chạy chương trình:
+
+    dulieu/
+    ├── taikhoangiangvien.txt
+    ├── <thư mục giảng viên 1>
+    │   ├── tenlop.txt
+    │   └── sinhvien.txt
+    └── <thư mục giảng viên 2>/
+        ├── tenlop.txt
+        └── sinhvien.txt
+
+Ví dụ định dạng nội dung:
+- taikhoangiangvien.txt: mỗi dòng gồm (mã giảng viên; mật khẩu)
+- tenlop.txt: các trường gồm (mã lớp; tên lớp; mã giảng viên; tên giảng viên)
+- sinhvien.txt: mỗi dòng gồm (họ tên; mã số sinh viên; điểm)
+
+6. LUỒNG HOẠT ĐỘNG
+
+┌───────────────────────────────────────┐
+│           TẠO DỮ LIỆU MẪU             │
+├───────────────────────────────────────┤
+│ • Tạo dữ liệu mẫu đã có sẵn trong code│
+│ • Kiểm tra tạo thành công chưa ?      │
+└───────────────────┬───────────────────┘
+                    │ (*) Thành công
+                    │ (✗) Thất bại: báo lỗi
+                    ▼
+┌───────────────────────────────────────┐
+│            MENU TÀI KHOẢN             │◄──────────────────────────────────────────────────────────────────────────────┐
+├───────────────────────────────────────┤                                                                               │
+│ • [00] Thông tin                      │                                                                               │
+│ • [01] Đăng nhập                      │                                                                               │
+│ • [02] Đăng ký                        │                                                                               │
+│ • [03] Xem tài khoản giảng viên mẫu   │                                                                               │
+│ • [04] Thoát chương trình             │                                                                               │
+└───────────────┬───────────────┬───────┘                                                                               │
+                │ [01]          │ [02]                                                                                  │
+                ▼               ▼                                                                                       │
+┌──────────────────────┐  ┌──────────────────────┐                                                                      │
+│      ĐĂNG NHẬP       │  │       ĐĂNG KÝ        │                                                                      │
+└──────────┬───────────┘  └──────────┬───────────┘                                                                      │
+           │                         │                                                                                  │
+     ┌─────┴─────┐                   │ (*) Lưu tài khoản                                                                │
+     │           │                   │     rồi đăng nhập lại                                                            │
+     │           │                   │                                                                                  │
+     ▼           └─────────────────┬─┘                                                                                  │
+┌──────────────────────────┐       │                                                                                    │
+│ Nhập lại mã và mật khẩu  │       │                                                                                    │
+│ Tối đa 3 lần             │       │                                                                                    │
+└────────┬─────────────────┘       │                                                                                    │
+         │ Sai                     │                                                                                    │
+         └── Hết 3 lần: quay lại   │                                                                                    │
+             MENU TÀI KHOẢN        │                                                                                    │
+                                   ▼                                                                                    │
+┌───────────────────────────────────────┐                                                                               │
+│            MENU GIẢNG VIÊN            │◄─────────────────────────────────────────────────────┐                        │
+├───────────────────────────────────────┤                                                      │                        │
+│ • [01] Quản lý lớp                    │                                                      │                        │
+│ • [02] Sửa thông tin giảng viên       │                                                      │                        │
+│ • [03] Đăng xuất                      │───────────────────────────────────────────────────────────────────────────────┘
+└───────┬──────────────────────┬────────┘                                                      │                        
+        │ [01]                 │ [02]                                                          │                        
+        ▼                      ▼                                                               │                        
+┌───────────────────────┐  ┌───────────────────────────────────────┐                           │                        
+│   CHƯƠNG TRÌNH CHÍNH  │  │       SỬA THÔNG TIN GIẢNG VIÊN        │                           │                        
+├───────────────────────┤  └───────────────────┬───────────────────┘                           │                        
+│ • [00] Thay màu       │                      │ Hoàn tất                                      │                        
+│ • [01] Xem danh sách  │                      └──> MENU GIẢNG VIÊN                            │                        
+│ • [02] Thêm sinh viên │                                                                      │                        
+│ • [03] Sửa thông tin  │                                                                      │                        
+│ • [04] Lọc thông tin  │                                                                      │                        
+│ • [05] Sắp xếp        │                                                                      │                        
+│ • [06] Xóa thông tin  │                                                                      │                        
+│ • [07] Thống kê       │                                                                      │                        
+│ • [08] Quay lại       │──────────────────────────────────────────────────────────────────────┘         
+└───────────────────────┘                                                                                               
+                                                                                                                        
+
+Nếu một lớp mới chưa có sinh viên mẫu, chương trình thông báo để giảng viên thêm dữ liệu
+Khi thay đổi danh sách, chương trình ghi lại tệp sinhvien.txt của lớp đang đăng nhập
+7. MÔ TẢ CHI TIẾT CHỨC NĂNG
+
+7.1 Đăng nhập
+Người dùng nhập mã giảng viên và mật khẩu
+Mã được chuyển thành chữ hoa trước khi so sánh
+Hệ thống kiểm tra thông tin trong danh sách đã nạp (tối đa ba lần thử nếu sai)
+
+7.2 Đăng ký
+Người dùng nhập mã, tên, mật khẩu hai lần xác nhận và thông tin lớp phụ trách
+Mã giảng viên không được trùng (mã lớp không được dùng bởi một giảng viên đã có)
+Mật khẩu yêu cầu ít nhất sáu ký tự
+Sau khi ghi thành công, chương trình yêu cầu đăng nhập lại
+
+7.3 Xem và quản lý sinh viên
+Danh sách hiển thị số thứ tự, họ tên, mã số, điểm và học lực
+
+Khi sửa, người dùng chọn sinh viên theo số thứ tự
+Bỏ trống tên hoặc mã để giữ giá trị cũ (điểm nhập không hợp lệ được thay bằng điểm cũ)
+Hệ thống từ chối mã trùng với sinh viên khác trong lớp
+
+7.4 Lọc
+- Theo tên gọi: nhập chữ cái đầu (Ví dụ nhập L ra Nguyễn Bảo Lam)
+- Theo điểm: nhập hai đầu mút trong khoảng 0 đến 10 
+- Theo học lực: chọn một trong năm nhóm mà chương trình tính từ điểm
+- Theo mã số: nhập hai mã làm khoảng tìm
+
+7.5 Sắp xếp
+Có các lựa chọn sắp xếp theo tên gọi A-Z/Z-A, mã số tăng dần và điểm tăng/giảm
+Kết quả sắp xếp được ghi vào tệp sinh viên nên thứ tự sẽ được giữ ở lần nạp sau
+
+7.6 Thống kê
+Chương trình hiển thị sĩ số, số lượng theo các nhóm điểm, danh sách sinh viên học lực giỏi, điểm trung bình lớp và sinh viên đạt điểm cao nhất/thấp nhất
+
+
+HẾT
+
