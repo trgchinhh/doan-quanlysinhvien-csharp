@@ -9,7 +9,9 @@ namespace DoAn_QuanLySinhVien {
 
 		public bool KiemTra() {
 			try {
-				Directory.CreateDirectory(this.thumucdulieu);
+				if (!Directory.Exists(thumucdulieu)) {
+					Directory.CreateDirectory(thumucdulieu);
+				}
 				return true;
 			}
 			catch (Exception ex) {
@@ -18,135 +20,117 @@ namespace DoAn_QuanLySinhVien {
 			}
 		}
 
-		// đọc tài khoản giảng viên kèm lớp phụ trách từ thư mục của giảng viên
 		public List<GiangVien> NapDanhSachGiangVien() {
-			List<GiangVien> danhsachgiangvien = new List<GiangVien>();
-			if (!File.Exists(this.dulieugiangvien)) {
-				return danhsachgiangvien;
+			List<GiangVien> ds = new List<GiangVien>();
+			if (!File.Exists(dulieugiangvien)) {
+				return ds;
 			}
-			foreach (string dong in File.ReadAllLines(this.dulieugiangvien)) {
-				string[] taikhoan = dong.Split(';');
-				if (taikhoan.Length < 2) {
+			string[] cacdong = File.ReadAllLines(dulieugiangvien);
+			for (int i = 0; i < cacdong.Length; i++) {
+				string[] tk = cacdong[i].Split(';');
+				if (tk.Length < 2) {
 					continue;
 				}
-				string thumuc = this.LayThuMucGiangVien(taikhoan[0].Trim());
+				string thumuc = LayThuMucGiangVien(tk[0].Trim());
 				if (thumuc == "") {
 					continue;
 				}
-				string[] donglop = File.ReadAllLines(thumuc + "/tenlop.txt");
-				if (donglop.Length == 0) {
+				string[] dongtenlop = File.ReadAllLines(thumuc + "/tenlop.txt");
+				if (dongtenlop.Length == 0) {
 					continue;
 				}
-				string[] lop = donglop[0].Split(';');
+				string[] lop = dongtenlop[0].Split(';');
 				if (lop.Length < 4) {
 					continue;
 				}
-				GiangVien giangvien = new GiangVien(
-					taikhoan[0].Trim(),
-					lop[3].Trim(),
-					taikhoan[1].Trim(),
-					lop[0].Trim(),
-					lop[1].Trim()
-				);
-				danhsachgiangvien.Add(giangvien);
+				GiangVien gv = new GiangVien(tk[0].Trim(), lop[3].Trim(), tk[1].Trim(), lop[0].Trim(), lop[1].Trim());
+				ds.Add(gv);
 			}
-			return danhsachgiangvien;
+			return ds;
 		}
 
 		public List<SinhVien> NapDanhSachSinhVien(string malop) {
-			List<SinhVien> danhsachsinhvien = new List<SinhVien>();
-			string thumuc = this.LayThuMucLop(malop);
+			List<SinhVien> ds = new List<SinhVien>();
+			string thumuc = LayThuMucLop(malop);
 			if (thumuc == "") {
-				return danhsachsinhvien;
+				return ds;
 			}
 			string file = thumuc + "/sinhvien.txt";
 			if (!File.Exists(file)) {
-				// tương thích dữ liệu cũ lưu sinh viên của lớp đầu tiên
 				file = thumuc + "/lopthu1.txt";
 			}
 			if (!File.Exists(file)) {
-				return danhsachsinhvien;
+				return ds;
 			}
-			foreach (string dong in File.ReadAllLines(file)) {
-				string[] cot = dong.Split(';');
-				if (cot.Length >= 3 && float.TryParse(cot[2].Trim(), out float diem)) {
-					danhsachsinhvien.Add(new SinhVien(cot[0].Trim(), cot[1].Trim(), diem));
+			string[] cacdong = File.ReadAllLines(file);
+			for (int i = 0; i < cacdong.Length; i++) {
+				string[] cot = cacdong[i].Split(';');
+				if (cot.Length >= 3) {
+					float diem = 0;
+					float.TryParse(cot[2].Trim(), out diem);
+					ds.Add(new SinhVien(cot[0].Trim(), cot[1].Trim(), diem));
 				}
 			}
-			return danhsachsinhvien;
+			return ds;
 		}
 
-		public void LuuDanhSachSinhVien(List<SinhVien> danhsachsinhvien, string malop) {
-			string thumuc = this.LayThuMucLop(malop);
+		public void LuuDanhSachSinhVien(List<SinhVien> ds, string malop) {
+			string thumuc = LayThuMucLop(malop);
 			if (thumuc == "") {
 				throw new Exception("Không tìm thấy thư mục lớp " + malop);
 			}
-			List<string> dong = new List<string>();
-			foreach (SinhVien sinhvien in danhsachsinhvien) {
-				dong.Add(sinhvien.TenSinhVien + ";" + sinhvien.MaSoSinhVien + ";" + sinhvien.DiemSinhVien);
+			string noidung = "";
+			for (int i = 0; i < ds.Count; i++) {
+				noidung += ds[i].TenSinhVien + ";" + ds[i].MaSoSinhVien + ";" + ds[i].DiemSinhVien + "\n";
 			}
-			File.WriteAllLines(thumuc + "/sinhvien.txt", dong);
+			File.WriteAllText(thumuc + "/sinhvien.txt", noidung);
 		}
 
-		// ghi tài khoản giảng viên và lớp phụ trách vào thư mục dữ liệu
-		public void LuuDuLieu(List<GiangVien> danhsachgiangvien) {
-			Directory.CreateDirectory(this.thumucdulieu);
-			List<string> taikhoan = new List<string>();
-			foreach (GiangVien giangvien in danhsachgiangvien) {
-				taikhoan.Add(giangvien.MaGiangVien + ";" + giangvien.MatKhau);
-				string thumuc = this.LayThuMucGiangVien(giangvien.MaGiangVien);
+		public void LuuDuLieu(List<GiangVien> ds) {
+			Directory.CreateDirectory(thumucdulieu);
+			string taikhoan = "";
+			for (int i = 0; i < ds.Count; i++) {
+				GiangVien gv = ds[i];
+				taikhoan += gv.MaGiangVien + ";" + gv.MatKhau + "\n";
+				string thumuc = LayThuMucGiangVien(gv.MaGiangVien);
 				if (thumuc == "") {
-					thumuc = this.thumucdulieu + "/" + giangvien.TenGiangVien;
+					thumuc = thumucdulieu + "/" + gv.TenGiangVien;
 					if (Directory.Exists(thumuc)) {
-						thumuc += "_" + giangvien.MaGiangVien;
+						thumuc = thumuc + "_" + gv.MaGiangVien;
 					}
 				}
 				Directory.CreateDirectory(thumuc);
-				File.WriteAllText(
-					thumuc + "/tenlop.txt",
-					giangvien.MaLop + ";" + giangvien.TenLop + ";" + giangvien.MaGiangVien + ";" + giangvien.TenGiangVien
-				);
+				string tenlop = gv.MaLop + ";" + gv.TenLop + ";" + gv.MaGiangVien + ";" + gv.TenGiangVien;
+				File.WriteAllText(thumuc + "/tenlop.txt", tenlop);
 				if (!File.Exists(thumuc + "/sinhvien.txt")) {
 					File.WriteAllText(thumuc + "/sinhvien.txt", "");
 				}
 			}
-			File.WriteAllLines(this.dulieugiangvien, taikhoan);
+			File.WriteAllText(dulieugiangvien, taikhoan);
 		}
 
-		// tìm thư mục của giảng viên theo mã giảng viên
 		private string LayThuMucGiangVien(string magiangvien) {
-			if (!Directory.Exists(this.thumucdulieu)) {
-				return "";
-			}
-			foreach (string thumuc in Directory.GetDirectories(this.thumucdulieu)) {
-				string file = thumuc + "/tenlop.txt";
-				if (!File.Exists(file)) {
-					continue;
-				}
-				foreach (string dong in File.ReadAllLines(file)) {
-					string[] cot = dong.Split(';');
+			string[] dsthumuc = Directory.GetDirectories(thumucdulieu);
+			for (int i = 0; i < dsthumuc.Length; i++) {
+				string file = dsthumuc[i] + "/tenlop.txt";
+				if (File.Exists(file)) {
+					string[] cot = File.ReadAllText(file).Split(';');
 					if (cot.Length > 2 && cot[2].Trim() == magiangvien) {
-						return thumuc;
+						return dsthumuc[i];
 					}
 				}
 			}
 			return "";
 		}
 
-		// tìm thư mục của lớp theo mã lớp
 		private string LayThuMucLop(string malop) {
-			if (!Directory.Exists(this.thumucdulieu)) {
-				return "";
-			}
-			foreach (string thumuc in Directory.GetDirectories(this.thumucdulieu)) {
-				string file = thumuc + "/tenlop.txt";
-				if (!File.Exists(file)) {
-					continue;
-				}
-				foreach (string dong in File.ReadAllLines(file)) {
-					string[] cot = dong.Split(';');
-					if (cot.Length > 0 && cot[0].Trim() == malop) {
-						return thumuc;
+			string[] dsthumuc = Directory.GetDirectories(thumucdulieu);
+			for (int i = 0; i < dsthumuc.Length; i++) {
+				string file = dsthumuc[i] + "/tenlop.txt";
+				if (File.Exists(file)) {
+					string[] cot = File.ReadAllText(file).Split(';');
+					if (cot[0].Trim() == malop) {
+						return dsthumuc[i];
 					}
 				}
 			}

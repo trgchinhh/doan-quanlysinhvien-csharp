@@ -8,8 +8,6 @@ public class Program {
 		Console.Clear();
 		Banner.Inbanner(Banner.BannerDoAnTinHoc);
 		QuanLyGiangVien quanlygiangvien = new QuanLyGiangVien();
-		//var luachonmau = HamPhuProgram.ChonMau();
-		//var luachonmau = Mau.danhsachmau[6]; 
 		int luachontruoc = 0;
 		while (true) {
 			Console.Clear();
