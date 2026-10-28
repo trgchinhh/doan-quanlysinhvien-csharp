@@ -27,11 +27,11 @@ namespace DoAn_QuanLySinhVien {
 			}
 			string[] cacdong = File.ReadAllLines(dulieugiangvien);
 			for (int i = 0; i < cacdong.Length; i++) {
-				string[] tk = cacdong[i].Split(';');
-				if (tk.Length < 2) {
+				string[] taikhoan = cacdong[i].Split(';');
+				if (taikhoan.Length < 2) {
 					continue;
 				}
-				string thumuc = LayThuMucGiangVien(tk[0].Trim());
+				string thumuc = LayThuMucGiangVien(taikhoan[0].Trim());
 				if (thumuc == "") {
 					continue;
 				}
@@ -43,7 +43,13 @@ namespace DoAn_QuanLySinhVien {
 				if (lop.Length < 4) {
 					continue;
 				}
-				GiangVien gv = new GiangVien(tk[0].Trim(), lop[3].Trim(), tk[1].Trim(), lop[0].Trim(), lop[1].Trim());
+				GiangVien gv = new GiangVien(
+					taikhoan[0].Trim(), 
+					lop[3].Trim(), 
+					taikhoan[1].Trim(), 
+					lop[0].Trim(), 
+					lop[1].Trim()
+				);
 				ds.Add(gv);
 			}
 			return ds;
@@ -68,39 +74,49 @@ namespace DoAn_QuanLySinhVien {
 				if (cot.Length >= 3) {
 					float diem = 0;
 					float.TryParse(cot[2].Trim(), out diem);
-					ds.Add(new SinhVien(cot[0].Trim(), cot[1].Trim(), diem));
+					SinhVien sinhvien = new SinhVien(
+						cot[0].Trim(), 
+						cot[1].Trim(), 
+						diem
+					);
+					ds.Add(sinhvien);
 				}
 			}
 			return ds;
 		}
 
-		public void LuuDanhSachSinhVien(List<SinhVien> ds, string malop) {
+		public void LuuDanhSachSinhVien(List<SinhVien> danhsachsinhvien, string malop) {
 			string thumuc = LayThuMucLop(malop);
 			if (thumuc == "") {
 				throw new Exception("Không tìm thấy thư mục lớp " + malop);
 			}
 			string noidung = "";
-			for (int i = 0; i < ds.Count; i++) {
-				noidung += ds[i].TenSinhVien + ";" + ds[i].MaSoSinhVien + ";" + ds[i].DiemSinhVien + "\n";
+			for (int i = 0; i < danhsachsinhvien.Count; i++) {
+				noidung += danhsachsinhvien[i].TenSinhVien + ";" 
+						+ danhsachsinhvien[i].MaSoSinhVien + ";" 
+						+ danhsachsinhvien[i].DiemSinhVien + "\n";
 			}
 			File.WriteAllText(thumuc + "/sinhvien.txt", noidung);
 		}
 
-		public void LuuDuLieu(List<GiangVien> ds) {
+		public void LuuDuLieu(List<GiangVien> danhsachgiangvien) {
 			Directory.CreateDirectory(thumucdulieu);
 			string taikhoan = "";
-			for (int i = 0; i < ds.Count; i++) {
-				GiangVien gv = ds[i];
-				taikhoan += gv.MaGiangVien + ";" + gv.MatKhau + "\n";
-				string thumuc = LayThuMucGiangVien(gv.MaGiangVien);
+			for (int i = 0; i < danhsachgiangvien.Count; i++) {
+				GiangVien giangvien = danhsachgiangvien[i];
+				taikhoan += giangvien.MaGiangVien + ";" + giangvien.MatKhau + "\n";
+				string thumuc = LayThuMucGiangVien(giangvien.MaGiangVien);
 				if (thumuc == "") {
-					thumuc = thumucdulieu + "/" + gv.TenGiangVien;
+					thumuc = thumucdulieu + "/" + giangvien.TenGiangVien;
 					if (Directory.Exists(thumuc)) {
-						thumuc = thumuc + "_" + gv.MaGiangVien;
+						thumuc = thumuc + "_" + giangvien.MaGiangVien;
 					}
 				}
 				Directory.CreateDirectory(thumuc);
-				string tenlop = gv.MaLop + ";" + gv.TenLop + ";" + gv.MaGiangVien + ";" + gv.TenGiangVien;
+				string tenlop = giangvien.MaLop + ";" 
+							  + giangvien.TenLop + ";"
+							  + giangvien.MaGiangVien + ";" 
+							  + giangvien.TenGiangVien;
 				File.WriteAllText(thumuc + "/tenlop.txt", tenlop);
 				if (!File.Exists(thumuc + "/sinhvien.txt")) {
 					File.WriteAllText(thumuc + "/sinhvien.txt", "");
@@ -110,13 +126,13 @@ namespace DoAn_QuanLySinhVien {
 		}
 
 		private string LayThuMucGiangVien(string magiangvien) {
-			string[] dsthumuc = Directory.GetDirectories(thumucdulieu);
-			for (int i = 0; i < dsthumuc.Length; i++) {
-				string file = dsthumuc[i] + "/tenlop.txt";
+			string[] danhsachthumuc = Directory.GetDirectories(thumucdulieu);
+			for (int i = 0; i < danhsachthumuc.Length; i++) {
+				string file = danhsachthumuc[i] + "/tenlop.txt";
 				if (File.Exists(file)) {
 					string[] cot = File.ReadAllText(file).Split(';');
 					if (cot.Length > 2 && cot[2].Trim() == magiangvien) {
-						return dsthumuc[i];
+						return danhsachthumuc[i];
 					}
 				}
 			}
@@ -124,13 +140,13 @@ namespace DoAn_QuanLySinhVien {
 		}
 
 		private string LayThuMucLop(string malop) {
-			string[] dsthumuc = Directory.GetDirectories(thumucdulieu);
-			for (int i = 0; i < dsthumuc.Length; i++) {
-				string file = dsthumuc[i] + "/tenlop.txt";
+			string[] danhsachthumuc = Directory.GetDirectories(thumucdulieu);
+			for (int i = 0; i < danhsachthumuc.Length; i++) {
+				string file = danhsachthumuc[i] + "/tenlop.txt";
 				if (File.Exists(file)) {
 					string[] cot = File.ReadAllText(file).Split(';');
 					if (cot[0].Trim() == malop) {
-						return dsthumuc[i];
+						return danhsachthumuc[i];
 					}
 				}
 			}
