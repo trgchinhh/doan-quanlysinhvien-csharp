@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Spectre.Console;
 
@@ -32,8 +33,17 @@ namespace DoAn_QuanLySinhVien {
 			Console.ResetColor();
 		}
 
+		public static void InNhap(string noidung) {
+			// in nhập thì dùng màu cyan
+			Console.Write("(");
+			ToMau("?", danhsachmau[5]);
+			Console.Write(") ");
+			Console.Write(noidung);
+			Console.ResetColor();
+		}
+
 		public static void InThanhCong(string noidung){
-			// in nhập thì dùng màu xanh lá
+			// in thành công thì dùng màu xanh lá
 			Console.Write("(");
 			ToMau("*", danhsachmau[1]);
 			Console.Write(") ");

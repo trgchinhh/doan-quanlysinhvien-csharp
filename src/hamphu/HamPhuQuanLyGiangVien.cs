@@ -38,36 +38,15 @@ namespace DoAn_QuanLySinhVien {
             Console.WriteLine();
         }
 
-        // nhập mật khẩu mà không hiện ký tự lên màn hình
         public static string NhapMatKhau(int lan) {
             if (lan == 1) {
-                Console.Write("(?) Nhập mật khẩu: ");
+                Mau.InNhap("Nhập mật khẩu: ");
             }
-            if (lan == 2) {
-                Console.Write("(?) Xác nhận mật khẩu: ");
+            else {
+                Mau.InNhap("Xác nhận mật khẩu: ");
             }
-            if (Console.IsInputRedirected) {
-                return Console.ReadLine()!.Trim();
-            }
-            var matkhau = new StringBuilder();
-            while (true) {
-                ConsoleKeyInfo phim = Console.ReadKey(true);
-                if (phim.Key == ConsoleKey.Enter) {
-                    break;
-                }
-                if (phim.Key == ConsoleKey.Backspace) {
-                    if (matkhau.Length > 0) {
-                        matkhau.Remove(matkhau.Length - 1, 1);
-                        Console.Write("\b \b");
-                    }
-                }
-                else if (!char.IsControl(phim.KeyChar)) {
-                    matkhau.Append(phim.KeyChar);
-                    Console.Write('*');
-                }
-            }
-            Console.WriteLine();
-            return matkhau.ToString();
+            string matkhau = Console.ReadLine();
+            return matkhau;
         }
     }
 }

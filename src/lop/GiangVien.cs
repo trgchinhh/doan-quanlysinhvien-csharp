@@ -115,7 +115,7 @@ namespace DoAn_QuanLySinhVien {
 		// in thông tin tài khoản giảng viên + lớp phụ trách (dùng ở màn hình đăng nhập)
 		public void XuatThongTinTaiKhoan(int sothutu, int sosinhvienlop) {
 			Console.WriteLine(
-				"{0,-5} {1,-10} {2,-20} {3,-10} {4,-34} {5,-12}",
+				" {0,-5} {1,-10} {2,-20} {3,-10} {4,-34} {5,-12}",
 				sothutu,
 				this.MaGiangVien,
 				this.TenGiangVien,

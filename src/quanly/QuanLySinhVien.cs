@@ -74,7 +74,7 @@ namespace DoAn_QuanLySinhVien {
 		public int NhapSoThuTu() {
 			int sothutu;
 			do {
-				Console.Write("Nhập số thứ tự (0 để thoát): ");
+				Mau.InNhap("Nhập số thứ tự: ");
 				int.TryParse(Console.ReadLine()!, out sothutu);
 				if (sothutu < 0 || sothutu > this.soluongsinhvien) {
 					Mau.InCanhBao($"Nhập STT trong khoảng 1 -> {this.soluongsinhvien}");
@@ -91,7 +91,7 @@ namespace DoAn_QuanLySinhVien {
 			Mau.InThanhCong("Thêm thông tin sinh viên\n");
 			int soluong;
 			do {
-				Console.Write("Nhập số lượng Sv muốn thêm (0 để thoát): ");
+				Mau.InNhap("Nhập số lượng sinh viên muốn thêm: ");
 				int.TryParse(Console.ReadLine()!, out soluong);
 				if (soluong < 0) {
 					Mau.InCanhBao("Số lượng phải từ 1 trở lên !");
@@ -106,7 +106,7 @@ namespace DoAn_QuanLySinhVien {
 			for (int i = 0; i < soluong; i++) {
 				SinhVien sinhvienmoi = new SinhVien();
 				this.InDanhSachSinhVien();
-				Console.WriteLine($"Nhập thông tin Sv thứ {i + 1}");
+				Mau.InNhap($"Nhập thông tin sinh viên thứ {i + 1}");
 				if(!sinhvienmoi.NhapThongTin()){
 					break;
 				}
@@ -168,15 +168,13 @@ namespace DoAn_QuanLySinhVien {
 				return;
 			}
 			SinhVien sinhvien = this.danhsachsinhvien[sothutu - 1];
-			// lưu giá trị cũ để so sánh và ghi log
 			string tencu = sinhvien.TenSinhVien;
 			string masosinhviencu = sinhvien.MaSoSinhVien;
 			float diemcu = sinhvien.DiemSinhVien;
-			// danh sách các thay đổi, mỗi phần tử dạng: tên: "A" -> "B"
 			List<string> danhsachthaydoi = new List<string>();
 			Console.WriteLine("Bỏ trống và nhấn Enter để giữ nguyên giá trị cũ");
 
-			Console.Write("Nhập tên: ");
+			Mau.InNhap("Nhập tên: ");
 			string tenthay = Console.ReadLine()!.Trim();
 			if (string.IsNullOrEmpty(tenthay)) {
 				tenthay = tencu;
@@ -186,17 +184,17 @@ namespace DoAn_QuanLySinhVien {
 			}
 			sinhvien.TenSinhVien = tenthay;
 
-			Console.Write("Nhập mã số: ");
+			Mau.InNhap("Nhập mã số: ");
 			string masothay = Console.ReadLine()!.Trim();
 			if (string.IsNullOrEmpty(masothay)) {
 				masothay = masosinhviencu;
 			}
 			else if (masothay != masosinhviencu) {
-				danhsachthaydoi.Add($"mã số: \"{masosinhviencu}\" -> \"{masothay}\"");
+				danhsachthaydoi.Add($"mã số: '{masosinhviencu}' -> '{masothay}'");
 			}
 			sinhvien.MaSoSinhVien = masothay;
 
-			Console.Write("Nhập điểm: ");
+			Mau.InNhap("Nhập điểm: ");
 			float.TryParse(Console.ReadLine()!, out float diemthay);
 			if (diemthay <= 0 || diemthay > 10) {
 				diemthay = diemcu;
@@ -226,8 +224,14 @@ namespace DoAn_QuanLySinhVien {
 				}
 			}
 			Console.WriteLine();
+			string str_thaydoi;
+			if(thaydoi){
+				str_thaydoi = "Đã";
+			} else {
+				str_thaydoi = "Không";
+			}
 			Mau.InThanhCong(
-				$"{(thaydoi ? "Đã" : "Không")} thay đổi thông tin sinh viên: {sinhvien.TenSinhVien}"
+				$"{str_thaydoi} thay đổi thông tin sinh viên: {sinhvien.TenSinhVien}"
 			);
 		}
 
@@ -249,7 +253,7 @@ namespace DoAn_QuanLySinhVien {
 				List<SinhVien> ketqua = new List<SinhVien>();
 
 				if (luachon == 1) {
-					Console.Write("Nhập chữ cái đầu của tên: ");
+					Mau.InNhap("Nhập chữ cái đầu của tên: ");
 					string chucai = Console.ReadLine()!.Trim().ToLower();
 					if (chucai.Length == 0) {
 						Mau.InCanhBao("Chưa nhập chữ cái !");
@@ -264,13 +268,13 @@ namespace DoAn_QuanLySinhVien {
 					}
 				}
 				else if (luachon == 2) {
-					Console.Write("Từ điểm: ");
+					Mau.InNhap("Từ điểm: ");
 					if (!float.TryParse(Console.ReadLine(), out float tu) || tu < 0 || tu > 10) {
 						Mau.InCanhBao("Điểm phải từ 0 -> 10 !");
 						// continue;
 						return;
 					}
-					Console.Write("Đến điểm: ");
+					Mau.InNhap("Đến điểm: ");
 					if (!float.TryParse(Console.ReadLine(), out float den) || den < 0 || den > 10) {
 						Mau.InCanhBao("Điểm phải từ 0 -> 10 !");
 						// continue;
@@ -488,10 +492,11 @@ namespace DoAn_QuanLySinhVien {
 		public void InDanhSachSinhVien() {
 			Mau.InThanhCong("Danh sách sinh viên\n");
 			Console.WriteLine($"{"STT",-5} {"Tên sinh viên",-25} {"Mã số",-15} {"Điểm",-6} {"Học lực",-10}");
-			Console.WriteLine(new string('─', 65));
+			Console.WriteLine(new string('─', 68));
 			for (int i = 0; i < this.danhsachsinhvien.Count; i++) {
 				this.danhsachsinhvien[i].XuatThongTin(i + 1);
 			}
+			Console.WriteLine(new string('─', 68));
 			Console.WriteLine("");
 		}
 	}

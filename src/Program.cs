@@ -40,7 +40,7 @@ public class Program {
 				ThongTin.InThongTin();
 				continue;
 			} else if (luachon == 2) {
-				GiangVien? giangvien = quanlygiangvien.DangNhap();
+				GiangVien giangvien = quanlygiangvien.DangNhap();
 				if (giangvien == null) {
 					Mau.InCanhBao("Đăng nhập không thành công, vui lòng thử lại !");
 				}

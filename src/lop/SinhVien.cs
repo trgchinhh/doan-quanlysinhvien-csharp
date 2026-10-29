@@ -73,14 +73,14 @@ namespace DoAn_QuanLySinhVien {
 		// trả về false nếu người dùng bỏ trống (Enter) ở bất kỳ trường nào
 		public bool NhapThongTin() {
 			try {
-				Console.Write("(?) Nhập tên: ");
+				Mau.InNhap("Nhập tên: ");
 				string ten = Console.ReadLine()!.Trim();
 				if (ten.Length == 0) {
 					Mau.InCanhBao("Bỏ trống tên, hủy nhập sinh viên !");
 					return false;
 				}
 				this.TenSinhVien = ten;
-				Console.Write("(?) Nhập mã số: DH");
+				Mau.InNhap("Nhập mã số: DH");
 				string maso = Console.ReadLine()!.Trim();
 				if (maso.Length == 0) {
 					Mau.InCanhBao("Bỏ trống mã số, hủy nhập sinh viên !");
@@ -89,7 +89,7 @@ namespace DoAn_QuanLySinhVien {
 				this.MaSoSinhVien = "DH" + maso;
 				float diem;
 				while (true) {
-					Console.Write("(?) Nhập điểm (dùng ',' thay vì '.'): ");
+					Mau.InNhap("Nhập điểm (dùng ',' thay vì '.'): ");
 					string nhapdiem = Console.ReadLine()!.Trim();
 					if (nhapdiem.Length == 0) {
 						Mau.InCanhBao("Bỏ trống điểm, hủy nhập sinh viên !");
@@ -112,7 +112,7 @@ namespace DoAn_QuanLySinhVien {
 
 		public void XuatThongTin(int sothutu) {
 			Console.WriteLine(
-				"{0,-5} {1,-25} {2,-15} {3,-6:F1} {4,-10}",
+				" {0,-5} {1,-25} {2,-15} {3,-6:F1} {4,-10}",
 				sothutu,
 				this.TenSinhVien,
 				this.MaSoSinhVien,

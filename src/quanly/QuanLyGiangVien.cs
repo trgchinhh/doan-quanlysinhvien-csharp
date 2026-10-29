@@ -44,13 +44,13 @@ namespace DoAn_QuanLySinhVien {
 		}
 
 		// đăng ký tài khoản cho giảng viên mới kèm lớp phụ trách
-		public GiangVien? DangKy() {
+		public GiangVien DangKy() {
 			Console.Clear();
 			Banner.Inbanner(Banner.BannerDangKy);
 			HamPhuQuanLyGiangVien.InHuongDanDangKy();
 			string magiangvien;
 			while (true) {
-				Console.Write("(?) Nhập mã giảng viên: ");
+				Mau.InNhap("Nhập mã giảng viên: ");
 				magiangvien = Console.ReadLine()!.Trim().ToUpper();
 				if (magiangvien.Length == 0) {
 					Mau.InCanhBao("Bỏ trống mã giảng viên, hủy đăng ký !");
@@ -62,7 +62,7 @@ namespace DoAn_QuanLySinhVien {
 				}
 				break;
 			}
-			Console.Write("(?) Nhập tên giảng viên: ");
+			Mau.InNhap("Nhập tên giảng viên: ");
 			string tengiangvien = Console.ReadLine()!.Trim();
 			if (tengiangvien.Length == 0) {
 				Mau.InCanhBao("Bỏ trống tên giảng viên, hủy đăng ký !");
@@ -95,7 +95,7 @@ namespace DoAn_QuanLySinhVien {
 				Mau.InCanhBao("Hai mật khẩu không khớp, hãy nhập lại !");
 			}
 
-			Lop? lop = this.NhapLopPhuTrach();
+			Lop lop = this.NhapLopPhuTrach();
 			if (lop == null) {
 				return null;
 			}
@@ -125,13 +125,13 @@ namespace DoAn_QuanLySinhVien {
 
 		// Các hàm chính 
 		// đăng nhập bằng tài khoản giảng viên 
-		public GiangVien? DangNhap() {
+		public GiangVien DangNhap() {
 			for (int lanthu = 1; lanthu <= solandangnhaptoida; lanthu++) {
 				Console.Clear();
 				Banner.Inbanner(Banner.BannerDangNhap);
 				HamPhuQuanLyGiangVien.InHuongDanDangNhap(lanthu, solandangnhaptoida);
 
-				Console.Write("(?) Nhập mã giảng viên: ");
+				Mau.InNhap("Nhập mã giảng viên: ");
 				string magiangvien = Console.ReadLine()!.Trim().ToUpper();
 				if (magiangvien.Length == 0) {
 					Mau.InCanhBao("Bỏ trống mã giảng viên, hủy đăng nhập !");
@@ -144,7 +144,7 @@ namespace DoAn_QuanLySinhVien {
 					return null;
 				}
 				try {
-					GiangVien? giangvien = null;
+					GiangVien giangvien = null;
 					for (int i = 0; i < this.danhsachgiangvien.Count; i++) {
 						if (this.danhsachgiangvien[i].MaGiangVien == magiangvien && this.danhsachgiangvien[i].MatKhau == matkhau) {
 							giangvien = this.danhsachgiangvien[i];
@@ -177,7 +177,7 @@ namespace DoAn_QuanLySinhVien {
 		}
 
 		// nhập lớp phụ trách, lớp đã có sẵn và chưa có giảng viên thì dùng luôn, còn lại tạo lớp mới
-		private Lop? NhapLopPhuTrach() {
+		private Lop NhapLopPhuTrach() {
 			string malop;
 			while (true) {
 				Console.Write("(?) Nhập mã lớp: ");
@@ -224,7 +224,7 @@ namespace DoAn_QuanLySinhVien {
 		}
 
 		public void SuaThongTinGiangVien(GiangVien giangvien) {
-			Console.Write("Nhập tên giảng viên mới (Enter để giữ nguyên): ");
+			Mau.InNhap("Nhập tên giảng viên mới: ");
 			string tenmoi = Console.ReadLine()!.Trim();
 			if (tenmoi != "") {
 				giangvien.TenGiangVien = tenmoi;
@@ -234,12 +234,12 @@ namespace DoAn_QuanLySinhVien {
 		}
 
 		// hàm tính tổng sinh viên của giảng viên 
-        public int TinhVaIn(bool coin = false){
+        public int TinhTongSinhVienTrongLopVaIn(bool chonin){
         	int tongsinhvien = 0;
             for (int i = 0; i < this.danhsachgiangvien.Count; i++) {
                 int sosinhvien = dulieu.NapDanhSachSinhVien(this.danhsachgiangvien[i].MaLop).Count;
             	tongsinhvien += sosinhvien;
-                if(coin){
+                if(chonin){
 	                this.danhsachgiangvien[i].XuatThongTinTaiKhoan(i + 1, sosinhvien);
                 }
             }
@@ -256,10 +256,10 @@ namespace DoAn_QuanLySinhVien {
 					$"{"STT",-5} {"Mã GV",-10} {"Tên giảng viên",-20} {"Mã lớp",-10} {"Tên lớp",-34} {"Sĩ số lớp",-12}"
 				);
 				Console.WriteLine(new string('─', 100));
-				int tongsoluongsinhvien = TinhVaIn(true);
+				int tongsoluongsinhvien = TinhTongSinhVienTrongLopVaIn(true);
 				Console.WriteLine(new string('─', 100));
 				Console.WriteLine(
-					$"{"Tổng cộng", -82} {tongsoluongsinhvien + " sinh viên", -10}"
+					$"{"Tổng cộng", -83} {tongsoluongsinhvien + " sinh viên", -10}"
 				);
 			}
 			catch (Exception ex) {
