@@ -26,25 +26,20 @@ public class Program {
 			Console.WriteLine("  (↑ ↓) MENU");
 			var luachon = AnsiConsole.Prompt(
 				new SelectionPrompt<int>()
-				.AddChoices(0, 1, 2, 3, 4)
+				.AddChoices(1, 2, 3, 4, 5)
 				.WrapAround(true)
 				.HighlightStyle(Mau.Maumacdinh)
 				.DefaultValue(luachontruoc)
-				.UseConverter(x => x switch {
-					0 => Markup.Escape("[00] Thông tin"),
-					1 => Markup.Escape("[01] Đăng nhập"),
-					2 => Markup.Escape("[02] Đăng ký"),
-					3 => Markup.Escape("[03] Xem tài khoản giảng viên"),
-					4 => Markup.Escape("[04] Thoát"),
-					_ => ""
-				})
+				.UseConverter(x => Markup.Escape(
+					HamPhuProgram.MenuDangNhap[x-1]
+				))
 			);
 			luachontruoc = luachon;
 			Console.WriteLine();
-			if(luachon == 0){
+			if(luachon == 1){
 				ThongTin.InThongTin();
 				continue;
-			} else if (luachon == 1) {
+			} else if (luachon == 2) {
 				GiangVien? giangvien = quanlygiangvien.DangNhap();
 				if (giangvien == null) {
 					Mau.InCanhBao("Đăng nhập không thành công, vui lòng thử lại !");
@@ -53,13 +48,13 @@ public class Program {
 					MenuGiangVien(giangvien, quanlygiangvien);
 				}
 			}
-			else if (luachon == 2) {
+			else if (luachon == 3) {
 				quanlygiangvien.DangKy();
 			}
-			else if (luachon == 3) {
+			else if (luachon == 4) {
 				quanlygiangvien.XemThongTinTaiKhoanGiangVien();
 			}
-			else if (luachon == 4) {
+			else if (luachon == 5) {
 				Console.Clear();
 				Banner.Inbanner(Banner.BannerTamBiet);
 				break;
@@ -81,12 +76,9 @@ public class Program {
 				.WrapAround(true)
 				.HighlightStyle(Mau.Maumacdinh)
 				.DefaultValue(luachontruoc)
-				.UseConverter(x => x switch {
-					1 => Markup.Escape("[01] Quản lý lớp"),
-					2 => Markup.Escape("[02] Sửa thông tin giảng viên"),
-					3 => Markup.Escape("[03] Đăng xuất"),
-					_ => ""
-				})
+				.UseConverter(x => Markup.Escape(
+					HamPhuProgram.MenuGiangVien[x-1]
+				))
 			);
 			luachontruoc = luachon;
 			Console.WriteLine();
@@ -122,17 +114,9 @@ public class Program {
 				.WrapAround(true)
 				.HighlightStyle(Mau.Maumacdinh)
 				.DefaultValue(luachontruoc)
-				.UseConverter(x => x switch {
-					1 => Markup.Escape("[01] Xem danh sách"),
-					2 => Markup.Escape("[02] Thêm sinh viên"),
-					3 => Markup.Escape("[03] Sửa thông tin"),
-					4 => Markup.Escape("[04] Lọc thông tin"),
-					5 => Markup.Escape("[05] Sắp xếp thông tin"),
-					6 => Markup.Escape("[06] Xóa thông tin"),
-					7 => Markup.Escape("[07] Thống kê"),
-					8 => Markup.Escape("[08] Quay lại"),
-					_ => ""
-				})
+				.UseConverter(x => Markup.Escape(
+					HamPhuProgram.MenuQuanLySinhVien[x-1]
+				))
 			);
 			luachontruoc = luachon;
 			Console.WriteLine();
