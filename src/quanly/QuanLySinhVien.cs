@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Spectre.Console;
 
 namespace DoAn_QuanLySinhVien {
 	internal class QuanLySinhVien {
@@ -233,26 +234,17 @@ namespace DoAn_QuanLySinhVien {
 		// lọc thông tin sinh viên
 		public void LocThongTinSinhVien() {
 			while (true) {
-				Console.WriteLine(
-					"LỌC SINH VIÊN\n" +
-					"1. Lọc theo chữ cái đầu của tên\n" +
-					"2. Lọc theo điểm\n" +
-					"3. Lọc theo học lực\n" +
-					"4. Lọc theo mã số\n" +
-					"0. Quay lại"
+				Console.WriteLine("  (↑ ↓) MENU LỌC SINH VIÊN");
+				var luachon = AnsiConsole.Prompt(
+					new SelectionPrompt<int>()
+					.AddChoices(1, 2, 3, 4, 5)
+					.WrapAround(true)
+					.HighlightStyle(Mau.Maumacdinh)
+					.DefaultValue(1)
+					.UseConverter(x => Markup.Escape(
+						HamPhuQuanLySinhVien.MenuLocSinhVien[x-1]
+					))
 				);
-				Console.Write("Lựa chọn: ");
-				string nhap = Console.ReadLine()!;
-				if (string.IsNullOrEmpty(nhap)) {
-					return;
-				}
-				if (!int.TryParse(nhap, out int luachon)) {
-					Mau.InCanhBao("Vui lòng chọn hợp lệ !");
-					continue;
-				}
-				if (luachon == 0) {
-					return;
-				}
 				Console.WriteLine();
 				List<SinhVien> ketqua = new List<SinhVien>();
 
@@ -261,7 +253,8 @@ namespace DoAn_QuanLySinhVien {
 					string chucai = Console.ReadLine()!.Trim().ToLower();
 					if (chucai.Length == 0) {
 						Mau.InCanhBao("Chưa nhập chữ cái !");
-						continue;
+						// continue;
+						return;
 					}
 					for (int i = 0; i < this.danhsachsinhvien.Count; i++) {
 						string tencuoi = HamPhuQuanLySinhVien.LayTenCuoi(this.danhsachsinhvien[i].TenSinhVien).ToLower();
@@ -274,12 +267,14 @@ namespace DoAn_QuanLySinhVien {
 					Console.Write("Từ điểm: ");
 					if (!float.TryParse(Console.ReadLine(), out float tu) || tu < 0 || tu > 10) {
 						Mau.InCanhBao("Điểm phải từ 0 -> 10 !");
-						continue;
+						// continue;
+						return;
 					}
 					Console.Write("Đến điểm: ");
 					if (!float.TryParse(Console.ReadLine(), out float den) || den < 0 || den > 10) {
 						Mau.InCanhBao("Điểm phải từ 0 -> 10 !");
-						continue;
+						// continue;
+						return;
 					}
 					if (tu > den) {
 						(tu, den) = (den, tu);
@@ -302,7 +297,8 @@ namespace DoAn_QuanLySinhVien {
 					Console.Write("Chọn học lực: ");
 					if (!int.TryParse(Console.ReadLine(), out int hocluc) || hocluc < 1 || hocluc > 5) {
 						Mau.InCanhBao("Vui lòng chọn 1 -> 5 !");
-						continue;
+						// continue;
+						return;
 					}
 					for (int i = 0; i < this.danhsachsinhvien.Count; i++) {
 						if (HamPhuQuanLySinhVien.LayMaHocLuc(this.danhsachsinhvien[i].DiemSinhVien) == hocluc) {
@@ -317,7 +313,8 @@ namespace DoAn_QuanLySinhVien {
 					string maden = Console.ReadLine()!.Trim();
 					if (matu.Length == 0 || maden.Length == 0) {
 						Mau.InCanhBao("Chưa nhập mã số !");
-						continue;
+						// continue;
+						return;
 					}
 					if (string.Compare(matu, maden, StringComparison.OrdinalIgnoreCase) > 0) {
 						(matu, maden) = (maden, matu);
@@ -330,9 +327,8 @@ namespace DoAn_QuanLySinhVien {
 						}
 					}
 				}
-				else {
-					Mau.InCanhBao("Vui lòng chọn hợp lệ !");
-					continue;
+				else if(luachon == 5){
+					return;
 				}
 				HamPhuQuanLySinhVien.InKetQuaLoc(ketqua);
 				break;
@@ -343,69 +339,55 @@ namespace DoAn_QuanLySinhVien {
 		public void SapXepThongTinSinhVien() {
 			bool hiendanhsach = true;
 			while (true) {
-				Console.WriteLine(
-					"SẮP XẾP SINH VIÊN\n" +
-					"1. Sắp xếp theo tên (A -> Z)\n" +
-					"2. Sắp xếp theo tên (Z -> A)\n" +
-					"3. Sắp xếp theo mã số (Thấp -> Cao)\n" +
-					"4. Sắp xếp theo điểm (Thấp -> Cao)\n" +
-					"5. Sắp xếp theo điểm (Cao -> Thấp)\n" +
-					"0. Quay lại"
+				Console.WriteLine("  (↑ ↓) MENU SẮP XẾP SINH VIÊN");
+				var luachon = AnsiConsole.Prompt(
+					new SelectionPrompt<int>()
+					.AddChoices(1, 2, 3, 4, 5, 6)
+					.WrapAround(true)
+					.HighlightStyle(Mau.Maumacdinh)
+					.DefaultValue(1)
+					.UseConverter(x => Markup.Escape(
+						HamPhuQuanLySinhVien.MenuSapXepSinhVien[x-1]
+					))
 				);
-				Console.Write("Lựa chọn: ");
-				string? nhap = Console.ReadLine();
-				if (string.IsNullOrEmpty(nhap)) {
-					return;
-				}
-				if (!int.TryParse(nhap, out int luachon)) {
-					Mau.InCanhBao("Vui lòng chọn hợp lệ !");
-					continue;
-				}
-				string noidunglog = "";
 				Console.WriteLine();
 				if (luachon == 1) {
-					this.danhsachsinhvien.Sort((a, b)
-						=> String.Compare(
+					this.danhsachsinhvien.Sort((a, b) => String.Compare(
 							HamPhuQuanLySinhVien.LayTenCuoi(a.TenSinhVien), 
 							HamPhuQuanLySinhVien.LayTenCuoi(b.TenSinhVien)
 						)
 					);
-					noidunglog = "Đã sắp xếp theo tên (A->Z)";
-					Mau.InThanhCong(noidunglog);
+					Mau.InThanhCong("Đã sắp xếp theo tên (A->Z)");
 				}
 				else if (luachon == 2) {
-					this.danhsachsinhvien.Sort((a, b)
-						=> String.Compare(
+					this.danhsachsinhvien.Sort((a, b) => String.Compare(
 							HamPhuQuanLySinhVien.LayTenCuoi(b.TenSinhVien), 
 							HamPhuQuanLySinhVien.LayTenCuoi(a.TenSinhVien)
 						)
 					);
-					noidunglog = "Đã sắp xếp theo tên (Z->A)";
-					Mau.InThanhCong(noidunglog);
+					Mau.InThanhCong("Đã sắp xếp theo tên (Z->A)");
 				}
 				else if (luachon == 3){
 					this.danhsachsinhvien.Sort((a, b)
 						=> (HamPhuQuanLySinhVien.LaySoMaSoSinhVien(a.MaSoSinhVien)).
 						CompareTo(HamPhuQuanLySinhVien.LaySoMaSoSinhVien(b.MaSoSinhVien))
 					);
-					noidunglog = "Đã sắp xếp theo mã số (Thấp->Cao)";
-					Mau.InThanhCong(noidunglog);
+					Mau.InThanhCong("Đã sắp xếp theo mã số (Thấp->Cao)");
 				}	
 				else if (luachon == 4) {
 					this.danhsachsinhvien.Sort((a, b)
 						=> (a.DiemSinhVien).CompareTo(b.DiemSinhVien));
-					noidunglog = "Đã sắp xếp theo điểm (Thấp->Cao)";
-					Mau.InThanhCong(noidunglog);
+					Mau.InThanhCong("Đã sắp xếp theo điểm (Thấp->Cao)");
 				}
 				else if (luachon == 5) {
 					this.danhsachsinhvien.Sort((a, b)
 						=> (b.DiemSinhVien).CompareTo(a.DiemSinhVien));
-					noidunglog = "Đã sắp xếp theo điểm (Cao->Thấp)";
-					Mau.InThanhCong(noidunglog);
+					Mau.InThanhCong("Đã sắp xếp theo điểm (Cao->Thấp)");
 				}
-				else if (luachon == 0) {
-					hiendanhsach = false;
-					break;
+				else if (luachon == 6) {
+					// hiendanhsach = false;
+					// break;
+					return;
 				}
 				else {
 					Mau.InCanhBao("Vui lòng chọn hợp lệ");

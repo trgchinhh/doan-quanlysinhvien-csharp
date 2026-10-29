@@ -51,5 +51,22 @@ namespace DoAn_QuanLySinhVien {
             string socuoi = masosinhvien.Substring(masosinhvien.Length - 2, 2);
             return int.Parse(socuoi);
         }
+
+        public static string[] MenuLocSinhVien = {
+            "[4.1] Lọc theo chữ cái đầu của tên",
+            "[4.2] Lọc theo điểm",
+            "[4.3] Lọc theo học lực",
+            "[4.4] Lọc theo mã số",
+            "[4.5] Quay lại"
+        };
+
+        public static string[] MenuSapXepSinhVien = {
+            "[5.1] Sắp xếp theo tên (A -> Z)",
+            "[5.2] Sắp xếp theo tên (Z -> A)",
+            "[5.3] Sắp xếp theo mã số (Thấp -> Cao)",
+            "[5.4] Sắp xếp theo điểm (Thấp -> Cao)",
+            "[5.5] Sắp xếp theo điểm (Cao -> Thấp)",
+            "[5.6] Quay lại"
+        };
     }
 }
