@@ -23,7 +23,7 @@ namespace DoAn_QuanLySinhVien {
 
 		public static Color Maumacdinh = Color.Default;
 
-		public static void ToMau(string noidung, Color mau, bool xuongdong = false) {
+		public static void ToMau(string noidung, Color mau, bool xuongdong) {
 			Console.ForegroundColor = mau;
 			if (xuongdong){
 				Console.WriteLine(noidung);				
@@ -36,7 +36,7 @@ namespace DoAn_QuanLySinhVien {
 		public static void InNhap(string noidung) {
 			// in nhập thì dùng màu cyan
 			Console.Write("(");
-			ToMau("?", danhsachmau[5]);
+			ToMau("?", danhsachmau[5], false);
 			Console.Write(") ");
 			Console.Write(noidung);
 			Console.ResetColor();
@@ -45,7 +45,7 @@ namespace DoAn_QuanLySinhVien {
 		public static void InThanhCong(string noidung){
 			// in thành công thì dùng màu xanh lá
 			Console.Write("(");
-			ToMau("*", danhsachmau[1]);
+			ToMau("*", danhsachmau[1], false);
 			Console.Write(") ");
 			Console.WriteLine(noidung);
 			Console.ResetColor();
@@ -54,7 +54,7 @@ namespace DoAn_QuanLySinhVien {
 		public static void InCanhBao(string noidung){
 			// in cảnh báo thì dùng màu vàng 
 			Console.Write("(");
-			ToMau("!", danhsachmau[2]);
+			ToMau("!", danhsachmau[2], false);
 			Console.Write(") ");
 			Console.WriteLine(noidung);
 			Console.ResetColor();
@@ -63,7 +63,7 @@ namespace DoAn_QuanLySinhVien {
 		public static void InLoi(string noidung){
 			// in lỗi thì dùng màu đỏ 
 			Console.Write("(");
-			ToMau("X", danhsachmau[0]);
+			ToMau("X", danhsachmau[0], false);
 			Console.Write(") ");
 			Console.WriteLine(noidung);
 			Console.ResetColor();

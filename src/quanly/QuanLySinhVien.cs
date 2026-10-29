@@ -469,7 +469,7 @@ namespace DoAn_QuanLySinhVien {
 			Console.WriteLine();
 			Console.WriteLine("Danh sách sinh viên học lực giỏi: ");
 			foreach(SinhVien sinhvien in danhsachsinhviengioi){
-				Mau.ToMau("    -", Mau.danhsachmau[3]);
+				Mau.ToMau("    -", Mau.danhsachmau[3], false);
 				Console.WriteLine(sinhvien.TenSinhVien);
 			}
 			Console.WriteLine();
@@ -477,12 +477,12 @@ namespace DoAn_QuanLySinhVien {
 			Console.WriteLine("Điểm trung bình lớp: {0:F1}", diemtrungbinhlop);
 			Console.WriteLine($"Điểm cao nhất: {diemcaonhat:F1} ({soluongsinhviendiemcaonhat} sinh viên)");
 			foreach(SinhVien sinhvien in danhsachsinhviendiemcaonhat){
-				Mau.ToMau("    -", Mau.danhsachmau[3]);
+				Mau.ToMau("    -", Mau.danhsachmau[3], false);
 				Console.WriteLine(sinhvien.TenSinhVien);
 			}
 			Console.WriteLine($"Điểm thấp nhất: {diemthapnhat:F1} ({soluongsinhviendiemthapnhat} sinh viên)");
 			foreach(SinhVien sinhvien in danhsachsinhviendiemthapnhat){
-				Mau.ToMau("    -", Mau.danhsachmau[3]);
+				Mau.ToMau("    -", Mau.danhsachmau[3], false);
 				Console.WriteLine(sinhvien.TenSinhVien);
 			}
 			Console.WriteLine();

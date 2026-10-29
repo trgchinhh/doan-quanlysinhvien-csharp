@@ -106,7 +106,7 @@ namespace DoAn_QuanLySinhVien {
 			Console.Write("Giảng viên: ");
 			Mau.ToMau($"{this.TenGiangVien}", Mau.danhsachmau[3], true);
 			Console.Write("  - Sĩ số: ");
-			Mau.ToMau($"{this.SoSinhVienLop}", Mau.danhsachmau[4]);
+			Mau.ToMau($"{this.SoSinhVienLop}", Mau.danhsachmau[4], false);
 			Console.WriteLine(" (sinh viên)");
 			Console.Write("  - Lớp: ");
 			Mau.ToMau(this.LayTenLopDayDu(), Mau.danhsachmau[3], true);
